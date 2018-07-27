@@ -2,7 +2,7 @@
   <div class="row">
     <div class="offset-sm-3 col-sm-6">
         <div *ngIf="showloadingImage" class="col-md-4 offset-md-4 ">
-            <img src="./assets/image/ajax-loaderblack.gif" class="showLoadImage pull-right" alt="" height="40" width="40">
+            <img src="./assets/image/loader2.gif" class="showLoadImage pull-right" alt="" height="80" width="80">
           </div>
           <br>
       <div class="card">
@@ -52,8 +52,8 @@
             <!-- Modal body -->
             <div class="modal-body">
               <div class="form-group">
-                <label for="email">Email </label>
-                <input type="email" #email class="form-control" id="email" placeholder="Enter Your Email">
+                <label for="email">Enter Your Registered Email </label>
+                <input type="email" #email class="form-control" id="email" placeholder="Email">
               </div>
             </div>
 
@@ -61,8 +61,7 @@
             <div class="modal-footer">
                 <button type="button" 
                 class="btn btn-info" 
-                data-dismiss="modal"
-                (click)="onSendForgotPassword()">Send</button>
+                (click)="onSendForgotPassword()">Submit</button>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
 
