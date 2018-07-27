@@ -1,0 +1,65 @@
+<div class="container" style="margin-top: 10px;">
+  <div class="row">
+    <div class="col-sm-5">
+      <h3 style="text-align: left; color: #A50F2D;">Find Pet Love</h3>
+    </div>
+    <div class="col-sm-4">
+      <input #searchInput
+      class="form-control mr-sm-2" 
+      type="text"
+       placeholder="Search"
+       (keyup)="onSearchKeyPress()">
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+</div>
+
+<app-search></app-search>
+  <br>
+  <div *ngIf="showloadingImage" class="col-md-4 offset-md-4 ">
+     <img  src="./assets/image/ajax-loaderblack.gif" class="showLoadImage pull-right" alt="" height="40" width="40">
+   </div>
+   <ng-template #elseBlock>
+   <div class="col-md-4 offset-md-4 ">
+     <p id="noDataPresent">No Pet Found </p>
+   </div>
+     </ng-template>
+  <div class="container"  *ngIf="!dataHasOrNot; else elseBlock">
+    <div class="row">
+      <div class="offset-sm-2 col-sm-8"
+      id="infinite-scroller"
+      appInfiniteScroller
+      scrollPerecnt="70"
+      immediateCallback="true"
+      [scrollCallback]="scrollCallback">
+        <div class="card" *ngFor="let findPetLove of findPetLoveList">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-sm-3 petImage">
+                    <img class="pointerCursor rounded-circle" (click)="onDetailsClick(findPetLove.PetId)" src="{{findPetLove.PictrueName}}" alt="Card image" height="100" width="100">
+                  </div>
+                  <div class="col-sm-6 petDetails">
+                   <label class="bold">Name:</label> <label class="bold">{{findPetLove.PetName}}</label>
+                   <br>
+                   <label>Breed:</label> <label>{{findPetLove.BreedName}}</label>
+                   <br>
+                   <label>Age:</label> <label>{{findPetLove.PetDob}}</label>
+                   <br>
+                   <label>City:</label> <label>{{findPetLove.CityName}}</label>
+                   <br>
+                   <label>AreaName:</label> <label>{{findPetLove.AreaName}}</label>
+                  </div>
+                  <div class="col-sm-3 petContact">
+                      <label>Request</label>
+                      <img class="pointerCursor" (click)="onRequestClick(findPetLove.PetId)" src="./assets/image/money.png" alt="" height="40" width="40">
+                      <br>
+                      <label>Contact</label>
+                      <img class="pointerCursor" (click)="onContactClick()" src="./assets/image/Request.png" alt="" height="40" width="40">
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+  </div>

@@ -1,0 +1,62 @@
+.bold{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.pointerCursor{
+    cursor: pointer;
+}
+.showLoadImage{
+     margin-left: 180px;
+}
+#noDataPresent {
+    font-size: 20px;
+    font-weight: bolder;
+    margin-left: 106px;
+}
+
+#infinite-scroller {
+    height: 400px;
+    width: 100%;
+    border: 1px solid #f5ad7c;
+    overflow: scroll;
+    padding: 0;
+    list-style: none;
+  }
+
+
+  @media screen and (max-width: 480px) {
+    .petImage {
+        text-align: left;
+      }
+      .petDetails {
+          text-align: left;
+      }
+      .petContact{
+          text-align: right
+      }
+}
+
+  @media screen and (max-width: 360px) {
+    .petImage {
+        text-align: left;
+      }
+      .petDetails {
+          text-align: left;
+      }
+      .petContact{
+          text-align: right
+      }
+}
+
+@media screen and (max-width: 319px) {
+    .petImage {
+        text-align: left;
+      }
+      .petDetails {
+          text-align: left;
+      }
+      .petContact{
+          text-align: right
+      }
+}

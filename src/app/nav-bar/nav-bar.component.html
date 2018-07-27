@@ -1,0 +1,21 @@
+<!-- Blue with white text -->
+<nav class="navbar navbar-expand-sm" style="background-color: #A50F2D;">
+  <a class="navbar-brand" style="color: white" routerLink="/">PetPals</a>
+  <ul class="navbar-nav ml-auto">
+      <li *ngIf="securityToken == null"  class="nav-item" routerLinkActive="active">
+          <a class="nav-link pointerCursor"
+          routerLink="/sign-up">Sign Up</a>
+        </li>
+    <li *ngIf="securityToken == null" class="nav-item" routerLinkActive="active">
+      <a class="nav-link pointerCursor"
+      routerLink="/sign-in">Sign In</a>
+    </li>
+    <li *ngIf="securityToken" class="nav-item" routerLinkActive="active">
+        <a class="nav-link pointerCursor" style="text-decoration: underline;" >{{emailId}}</a>
+      </li>
+    <li *ngIf="securityToken" class="nav-item" routerLinkActive="active">
+      <a class="nav-link pointerCursor"
+      routerLink="/" (click)="onSignOutClick()">Sign Out</a>
+    </li>
+  </ul>
+</nav>

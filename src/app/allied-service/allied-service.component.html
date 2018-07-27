@@ -1,0 +1,184 @@
+
+<div class="container" style="margin-top: 10px;">
+  <div class="row">
+    <div class="col-sm-5">
+      <h3 style="text-align: left; color: #A50F2D;">Allied Service</h3>
+    </div>
+    <div class="col-sm-4">
+      <input #searchInput
+      class="form-control mr-sm-2" 
+      type="text"
+       placeholder="Search"
+       (keyup)="onSearchKeyPress()">
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+</div>
+
+
+<!-- allied search -->
+<div class="container" style="margin-top: 30px;">
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8">
+        <img 
+        (click)="onFilterClick()"
+        style="color: #A50F2D;vertical-align: top;cursor: pointer;" 
+        src="./assets/image/Filter.png" alt="" height="40" width="40">
+          <h2 style="display: inline;color: #A50F2D;">Filter</h2>
+          <div class="btn-group" *ngIf="!showOrHideFilter">
+            <button type="button" 
+            class="btn btn-primary" 
+            data-toggle="modal" 
+            data-target="#alliedPalsModal"
+            (click)="onAlliedPalsClick()">ALLIED PALS</button>
+            <button type="button" 
+            class="btn btn-primary" 
+            data-toggle="modal" 
+            data-target="#locationModal"
+            (click)="onLocationClick()">LOCATION</button>
+          </div>
+    </div>
+
+    
+    <div class="col-sm-2">
+       <!-- The AlliedPals Modal -->
+       <div class="modal fade" id="alliedPalsModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+  
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">BREED</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+  
+              <!-- Modal body -->
+              <div class="modal-body">
+                  <div class="form-check" *ngFor="let userType of UserTypeList">
+                      <label class="form-check-label">
+                        <input 
+                        type="checkbox" 
+                        class="form-check-input"
+                        (change)="onAlliedChange($event.target.value,$event.target.checked)"
+                        value="{{userType}}">{{userType}}
+                      </label>
+                    </div>
+              </div>
+  
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onAlliedPalsApply()" >Apply</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+
+         <!-- The LOCATION Modal -->
+      <div class="modal fade" id="locationModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+  
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">LOCATION</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+  
+              <!-- Modal body -->
+              <div class="modal-body">
+                  <div class="form-group">
+                      <label for="sel1">Country:</label>
+                      <select 
+                      class="form-control" 
+                      [(ngModel)]="selectedCountry"
+                      (change)="onCountryChange(selectedCountry)">
+                        <option *ngFor="let country of countryList"
+                        [ngValue]="country" >{{country.CountryName}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">City:</label>
+                        <select  class="form-control"
+                        [(ngModel)]="selectedCity"
+                       (change)="onCityChange(selectedCity)">
+                          <option *ngFor="let city of cityList"
+                          [ngValue]="city">{{city.CityName}}</option> 
+                        </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="sel1">Area:</label>
+                          <select 
+                          class="form-control"
+                          [(ngModel)]="selectedArea"
+                          (change)="onAreaChange(selectedArea)">
+                            <option *ngFor="let area of areaList"
+                            [ngValue]="area">{{area.AreaName}}</option>
+                          </select>
+                        </div>
+              </div>
+  
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <button type="button" 
+                  class="btn btn-info" 
+                  data-dismiss="modal"
+                  (click)="onLocationApply()">Apply</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+<!-- /allied search -->
+
+  <br>
+  <div *ngIf="showloadingImage" class="col-md-4 offset-md-4 ">
+     <img  src="./assets/image/ajax-loaderblack.gif" class="showLoadImage pull-right" alt="" height="40" width="40">
+   </div>
+ 
+   <ng-template #elseBlock>
+   <div class="col-md-4 offset-md-4 ">
+     <p id="noDataPresent">No Pet Found </p>
+   </div>
+     </ng-template>
+  <div class="container" *ngIf="!dataHasOrNot; else elseBlock">
+    <div class="row">
+      <div class="offset-sm-2 col-sm-8"
+      id="infinite-scroller"
+      appInfiniteScroller
+      scrollPerecnt="70"
+      immediateCallback="true"
+      [scrollCallback]="scrollCallback">
+        <div class="card" *ngFor="let alliedService of alliedServiceList">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-sm-3 petImage">
+                    <img class="pointerCursor rounded-circle" (click)="onDetailsClick(alliedService.PetId)" src="{{alliedService.PictrueName}}" alt="Card image" height="100" width="100">
+                  </div>
+                  <div class="col-sm-6 petDetails">
+                   <label class="bold">Name:</label> <label class="bold">{{alliedService.PetName}}</label>
+                   <br>
+                   <label>City:</label> <label>{{alliedService.CityName}}</label>
+                   <br>
+                   <label>AreaName:-</label> <label>{{alliedService.AreaName}}</label>
+                  </div>
+                  <div class="col-sm-3 petContact">
+                      <label>Request</label>
+                      <img class="pointerCursor" (click)="onRequestClick(alliedService.PetId)" src="./assets/image/money.png" alt="" height="40" width="40">
+                      <br>
+                      <label>Contact</label>
+                      <img class="pointerCursor" (click)="onContactClick()" src="./assets/image/Request.png" alt="" height="40" width="40">
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+  </div>

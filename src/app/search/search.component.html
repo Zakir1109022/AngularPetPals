@@ -1,0 +1,227 @@
+<div class="container" style="margin-top: 30px;">
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8">
+      <img 
+      (click)="onFilterClick()"
+      style="color: #A50F2D;vertical-align: top;cursor: pointer;"
+       src="./assets/image/Filter.png" 
+       alt="" height="40" width="40">
+      <h2 style="display: inline;color: #A50F2D;">Filter</h2>
+          <div class="btn-group" *ngIf="!showOrHideFilter">
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+             data-target="#petTypeModal" (click)="onPetTypeClick()">PET TYPE</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" 
+            data-target="#breedModal" (click)="onBreedClick()">BREED</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" 
+            data-target="#genderModal">GENDER</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" 
+            data-target="#locationModal" (click)="onLocationClick()">LOCATION</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+             data-target="#generalModal" >GENERAL</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" 
+            data-target="#priceModal" >PRICE</button>
+          </div>
+    </div>
+
+
+    <div class="col-sm-2">
+      <!-- The PET TYPE Modal -->
+      <div class="modal fade" id="petTypeModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">PET TYPE</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-check" *ngFor="let pet of petList">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" (change)="onPetTypeChange($event.target.value,$event.target.checked)" value="{{pet}}">{{pet}}
+                </label>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onPetTypeApply()">Apply</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- The BREED Modal -->
+      <div class="modal fade" id="breedModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">BREED</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-check" *ngFor="let breed of breedList">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" (change)="onBreedChange($event.target.value,$event.target.checked)" value="{{breed.BreedName}}">{{breed.BreedName}}
+                </label>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onBreedApply()">Apply</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- The GENDER Modal -->
+      <div class="modal fade" id="genderModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">GENDER</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="optradio" value="M" (change)="onGenderChange($event.target.value)">M</label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="optradio" value="F" (change)=onGenderChange($event.target.value)>F</label>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onGenderApply()">Apply</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- The LOCATION Modal -->
+      <div class="modal fade" id="locationModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">LOCATION</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="sel1">Country:</label>
+                <select class="form-control" [(ngModel)]="selectedCountry" (change)="onCountryChange(selectedCountry)">
+                  <option *ngFor="let country of countryList" [ngValue]="country">{{country.CountryName}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel1">City:</label>
+                <select class="form-control" [(ngModel)]="selectedCity" (change)="onCityChange(selectedCity)">
+                  <option *ngFor="let city of cityList" [ngValue]="city">{{city.CityName}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel1">Area:</label>
+                <select class="form-control" [(ngModel)]="selectedArea" (change)="onAreaChange(selectedArea)">
+                  <option *ngFor="let area of areaList" [ngValue]="area">{{area.AreaName}}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onLocationApply()">Apply</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- The GENERAL Modal -->
+      <div class="modal fade" id="generalModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">GENERAL</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-check disabled">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" (change)=onKCIChange($event.target.checked)>KCI Registerd
+                </label>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onGeneralApply()">Apply</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- The PRICE Modal -->
+      <div class="modal fade" id="priceModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">PRICE</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Price to" #priceTo>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Price from" #priceFrom>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onPriceApply()">Apply</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

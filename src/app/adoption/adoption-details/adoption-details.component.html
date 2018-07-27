@@ -1,0 +1,54 @@
+<div class="container" style="margin-top: 30px;background-color: white">
+  <div class="row">
+    <div class="col-sm-12">
+      <br>
+      <div class="alert alert-success">
+        <strong>
+          <a routerLink="/adoption">adoption</a>/adoption-details</strong>
+      </div>
+    </div>
+  </div>
+
+  <br>
+   <div *ngIf="showloadingImage" class="col-md-4 offset-md-4 ">
+     <img  src="./assets/image/ajax-loaderblack.gif" class="showLoadImage pull-right" alt="" height="40" width="40">
+   </div>
+
+   
+  <div class="row">
+    <div class="offset-sm-4 col-sm-4">
+      <img class="img-thumbnail" src="{{pet.PictrueName}}" alt="Card image" height="400" width="400">
+
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td>Name:</td>
+            <td>{{pet.PetName}}</td>
+          </tr>
+          <tr>
+            <td>Breed:</td>
+            <td>{{pet.BreedName}}</td>
+          </tr>
+          <tr>
+            <td>Age:</td>
+            <td>{{pet.PetDob}}</td>
+          </tr>
+          <tr>
+            <td>City:</td>
+            <td>{{pet.PetDob}}</td>
+          </tr>
+          <tr>
+            <td>Age:</td>
+            <td>{{pet.CityName}}</td>
+          </tr>
+          <tr>
+            <td>AreaName:</td>
+            <td>{{pet.AreaName}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-4">
+    </div>
+  </div>
+</div>

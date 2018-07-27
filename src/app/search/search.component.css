@@ -1,0 +1,28 @@
+@media screen and (max-width: 480px) {
+    .btn-group{
+        display: grid;
+    }
+    .btn{
+       margin-bottom: 1px;
+    }
+ }
+ 
+ 
+ @media screen and (max-width: 360px) {
+    .btn-group{
+        display: grid;
+    }
+    .btn{
+       margin-bottom: 1px;
+    }
+ }
+ 
+ 
+ @media screen and (max-width: 319px) {
+    .btn-group{
+        display: grid;
+    }
+    .btn{
+       margin-bottom: 1px;
+    }
+ }
