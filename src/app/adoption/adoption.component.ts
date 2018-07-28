@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { Pet } from '../shared/pet.model';
 import { AdoptionService } from './adoption.service';
 import { Router } from '@angular/router';
 import { OwnPetService } from '../own-a-pet/own-a-pet.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-adoption',
@@ -12,7 +13,7 @@ import { OwnPetService } from '../own-a-pet/own-a-pet.service';
 export class AdoptionComponent implements OnInit {
 
   adoptionList: Pet[] = [];
-  loadedPetList:Pet[]=[];
+  loadedPetList: Pet[] = [];
   showloadingImage: boolean = true;
   dataHasOrNot: boolean = false;
 
@@ -28,9 +29,13 @@ export class AdoptionComponent implements OnInit {
   constructor(
     private adoptionService: AdoptionService,
     private ownpetService: OwnPetService,
+    public toastr: ToastsManager,
+    vcr: ViewContainerRef,
     private router: Router
   ) {
     this.scrollCallback = this.getStories.bind(this);
+
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
 
@@ -42,7 +47,7 @@ export class AdoptionComponent implements OnInit {
   private processData = (results) => {
     this.currentPage++;
     this.adoptionList = this.adoptionList.concat(results);
-    this.loadedPetList=this.adoptionList;
+    this.loadedPetList = this.adoptionList;
 
   }
 
@@ -53,7 +58,7 @@ export class AdoptionComponent implements OnInit {
     this.adoptionService.searchPetList
       .subscribe((adaptionList: Pet[]) => {
         this.adoptionList = adaptionList;
-        this.loadedPetList=this.adoptionList;
+        this.loadedPetList = this.adoptionList;
       });
 
     //initially load loader
@@ -72,7 +77,7 @@ export class AdoptionComponent implements OnInit {
   }
 
   assignCopy() {
-    this.adoptionList= Object.assign([], this.loadedPetList);
+    this.adoptionList = Object.assign([], this.loadedPetList);
   }
 
 
@@ -83,7 +88,7 @@ export class AdoptionComponent implements OnInit {
       item => item.BreedName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.AreaName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.CityName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-       // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+        // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
   }
@@ -108,19 +113,22 @@ export class AdoptionComponent implements OnInit {
             "RequesterPetId": ""
           }
 
+           //set loader gif true
+           this.showloadingImage=true;
+          
+
           this.adoptionService.adoptionRequest(data, this.securityToken)
-          .subscribe((result:any) => {
-            var status=result.Status;
-            var errorMessage=result.ErrorMessage;
-            if(status !='Errored')
-            {
-              console.log(status)
-            }
-            else{
-              console.log(errorMessage)
-            }
-           
-          });
+            .subscribe((result: any) => {
+              var status = result.Status;
+              var errorMessage = result.ErrorMessage;
+              if (status != 'Errored') {
+                this.toastr.success(status, '');
+              }
+              else {
+                this.toastr.warning(errorMessage, '');
+              }
+
+            });
 
         });
     }

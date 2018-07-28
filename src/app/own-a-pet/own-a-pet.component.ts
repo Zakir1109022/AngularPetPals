@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { OwnPetService } from './own-a-pet.service';
 import { Pet } from '../shared/pet.model';
 import { Router } from '@angular/router';
-import { SharedService } from '../shared/shared.service';
-import { User } from '../auth/user.model';
+import { ToastsManager } from 'ng2-toastr';
 
 
 @Component({
@@ -30,9 +29,13 @@ export class OwnAPetComponent implements OnInit {
   scrollCallback;
   constructor(
     private ownPetService: OwnPetService,
+    public toastr: ToastsManager,
+    vcr: ViewContainerRef,
     private router: Router
   ) {
     this.scrollCallback = this.getStories.bind(this);
+
+    this.toastr.setRootViewContainerRef(vcr);
 
   }
   getStories() {
@@ -67,7 +70,6 @@ export class OwnAPetComponent implements OnInit {
 
 
   onSearchKeyPress() {
-    let searchValue = this.searchValue.nativeElement.value;
     let value = this.searchValue.nativeElement.value;
     if (!value) this.assignCopy(); //when nothing has typed
     this.ownPetList = Object.assign([], this.loadedPetList).filter(
@@ -99,20 +101,21 @@ export class OwnAPetComponent implements OnInit {
             "RequesterPetId": ""
           }
 
+          //set loader gif true
+          this.showloadingImage=true;
+
           this.ownPetService.OwnPetRequest(data, this.securityToken)
           .subscribe((result:any) => {
             var status=result.Status;
             var errorMessage=result.ErrorMessage;
             if(status !='Errored')
             {
-              console.log(status)
+              this.toastr.success(status, '');
             }
             else{
-              console.log(errorMessage)
+              this.toastr.warning(errorMessage, '');
             }
-           
-          });
-
+           });
         });
     }
     else {

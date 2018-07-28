@@ -35,6 +35,8 @@ import { SharedService } from './shared/shared.service';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ContactUsService } from './contact-us/contact-us.service';
 import { AuthGuard } from './auth/auth-guard.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 
 @NgModule({
@@ -64,7 +66,9 @@ import { AuthGuard } from './auth/auth-guard.service';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    AngularDateTimePickerModule
+    AngularDateTimePickerModule,
+    BrowserAnimationsModule,
+    ToastModule.forRoot()
   ],
   providers: [
     OwnPetService,

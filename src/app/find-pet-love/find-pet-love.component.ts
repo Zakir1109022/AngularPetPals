@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FindPetLoveService } from './find-pet-love.service';
 import { Pet } from '../shared/pet.model';
-import { OwnPetService } from '../own-a-pet/own-a-pet.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-find-pet-love',
@@ -28,9 +28,13 @@ export class FindPetLoveComponent implements OnInit {
 
   constructor(
     private findPetLoveService: FindPetLoveService,
+    public toastr: ToastsManager,
+    vcr: ViewContainerRef,
     private router: Router
   ) {
     this.scrollCallback = this.getStories.bind(this);
+
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   getStories() {
@@ -79,7 +83,7 @@ export class FindPetLoveComponent implements OnInit {
       item => item.BreedName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.AreaName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.CityName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-       // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+        // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
   }
@@ -97,12 +101,12 @@ export class FindPetLoveComponent implements OnInit {
           this.pet = petResult.find(p => p.PetId == petId);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
 
-        let  petOwner_petId:number;
+          let petOwner_petId: number;
 
           this.findPetLoveService.getFindPatLoveByPetOwnerId(this.pet.PetOwnerId)
-          .subscribe((result)=>{
-            petOwner_petId=result.PetId;
-          })
+            .subscribe((result) => {
+              petOwner_petId = result.PetId;
+            })
 
           var data = {
             "PetId": this.pet.PetId,
@@ -111,18 +115,20 @@ export class FindPetLoveComponent implements OnInit {
             "RequesterPetId": petOwner_petId
           }
 
+          //set loader gif true
+          this.showloadingImage=true;
+          
           this.findPetLoveService.findPetLoveRequest(data, this.securityToken)
-            .subscribe((result:any) => {
-              var status=result.Status;
-              var errorMessage=result.ErrorMessage;
-              if(status !='Errored')
-              {
-                console.log(status)
+            .subscribe((result: any) => {
+              var status = result.Status;
+              var errorMessage = result.ErrorMessage;
+              if (status != 'Errored') {
+                this.toastr.success(status, '');
               }
-              else{
-                console.log(errorMessage)
+              else {
+                this.toastr.warning(errorMessage, '');
               }
-             
+
             });
 
         });

@@ -527,6 +527,7 @@ export class AlliedService {
         return this.http.post(this.baseUrl + 'Utils/AlliedRequest', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
+                this.showloadingImageSubject.next(false);
                 return jsonResult;
             })
             .catch((error: Response) => {

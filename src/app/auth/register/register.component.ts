@@ -52,6 +52,7 @@ export class RegisterComponent implements OnInit {
 
   files: FileList;
   uploadedFile: File;
+  imagePath:string="#";
 
   showloadingImage: boolean = false;
 
@@ -108,6 +109,14 @@ export class RegisterComponent implements OnInit {
   fileChangeEvent(fileInput: any) {
     this.files = fileInput.target.files;
     this.uploadedFile= this.files[0];
+  
+
+    var reader = new FileReader();
+    reader.onload = (event: ProgressEvent) => {
+      this.imagePath = (<FileReader>event.target).result;
+    }
+
+    reader.readAsDataURL(fileInput.target.files[0]);
   }
 
 

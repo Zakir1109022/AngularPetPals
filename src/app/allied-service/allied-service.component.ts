@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { AlliedService } from './aliend-service.service';
 import { Pet } from '../shared/pet.model';
 import { SearchService } from '../search/search.service';
@@ -6,7 +6,7 @@ import { Country } from '../search/country.model';
 import { City } from '../search/city.model';
 import { Area } from '../search/area.model';
 import { Router } from '@angular/router';
-import { OwnPetService } from '../own-a-pet/own-a-pet.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-allied-service',
@@ -29,7 +29,7 @@ export class AlliedServiceComponent implements OnInit {
   showloadingImage: boolean = true;
   dataHasOrNot: boolean = false;
   showOrHideFilter = true;
-  
+
   securityToken: string;
   pet: Pet;
   loginUserId: string;
@@ -42,10 +42,14 @@ export class AlliedServiceComponent implements OnInit {
   constructor(
     private alliedService: AlliedService,
     private searchService: SearchService,
+    public toastr: ToastsManager,
+    vcr: ViewContainerRef,
     private router: Router
   ) {
 
     this.scrollCallback = this.getStories.bind(this);
+
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   getStories() {
@@ -243,19 +247,21 @@ export class AlliedServiceComponent implements OnInit {
             "RequesterPetId": ""
           }
 
+           //set loader gif true
+           this.showloadingImage=true;
+          
           this.alliedService.aliedServiceRequest(data, this.securityToken)
-          .subscribe((result:any) => {
-            var status=result.Status;
-            var errorMessage=result.ErrorMessage;
-            if(status !='Errored')
-            {
-              console.log(status)
-            }
-            else{
-              console.log(errorMessage)
-            }
-           
-          });
+            .subscribe((result: any) => {
+              var status = result.Status;
+              var errorMessage = result.ErrorMessage;
+              if (status != 'Errored') {
+                this.toastr.success(status, '');
+              }
+              else {
+                this.toastr.warning(errorMessage, '');
+              }
+
+            });
 
         });
     }
