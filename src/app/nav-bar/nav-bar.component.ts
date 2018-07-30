@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../shared/shared.service';
 
 
 @Component({
@@ -12,19 +11,10 @@ export class NavBarComponent implements OnInit {
   securityToken: string;
   emailId: string;
 
-  constructor(private sharedService: SharedService) { }
+  constructor() { }
 
   ngOnInit() {
 
-    this.sharedService.securityToken
-      .subscribe((token: string) => {
-        this.securityToken = token;
-      })
-
-      this.sharedService.emailId
-      .subscribe((email: string) => {
-        this.emailId = email;
-      })
 
   }
 

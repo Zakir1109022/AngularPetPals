@@ -1,7 +1,7 @@
-import { FindPetLoveService } from './../find-pet-love.service';
 import { Component, OnInit } from '@angular/core';
 import { Pet } from '../../shared/pet.model';
 import { ActivatedRoute, Params } from '@angular/router';
+import { SharedService } from '../../shared/shared.service';
 
 
 
@@ -19,7 +19,7 @@ export class FindPetLoveDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private findPetService: FindPetLoveService
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
@@ -28,7 +28,7 @@ export class FindPetLoveDetailsComponent implements OnInit {
         this.petId = params['id'];
       })
 
-    this.findPetService.getFindPatLoveByPetId(this.petId)
+    this.sharedService.getPetByPetId(this.petId)
       .subscribe((petResult: Pet[]) => {
         this.pet = petResult.find(p => p.PetId == this.petId);
         console.log(petResult);
@@ -36,7 +36,7 @@ export class FindPetLoveDetailsComponent implements OnInit {
 
 
       //initially load loader
-    this.findPetService.showloadingImageSubject
+    this.sharedService.showloadingImageSubject
     .subscribe((trueorfalse: boolean) => {
       this.showloadingImage = trueorfalse;
     })

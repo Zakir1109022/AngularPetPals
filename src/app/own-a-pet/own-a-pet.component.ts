@@ -3,6 +3,7 @@ import { OwnPetService } from './own-a-pet.service';
 import { Pet } from '../shared/pet.model';
 import { Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
+import { SharedService } from '../shared/shared.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class OwnAPetComponent implements OnInit {
   currentPage: number = 1;
   scrollCallback;
   constructor(
-    private ownPetService: OwnPetService,
+    private sharedService:SharedService,
     public toastr: ToastsManager,
     vcr: ViewContainerRef,
     private router: Router
@@ -39,7 +40,8 @@ export class OwnAPetComponent implements OnInit {
 
   }
   getStories() {
-    return this.ownPetService.showOwnaPatByPage(this.currentPage)
+    var body = { "WillingToSell": 1 };
+    return this.sharedService.showServicesByPage(this.currentPage,body)
       .do(this.processData)
   }
   private processData = (results) => {
@@ -50,14 +52,14 @@ export class OwnAPetComponent implements OnInit {
 
 
   ngOnInit() {
-    this.ownPetService.searchPetList
+    this.sharedService.searchPetList
       .subscribe((ownPetList: Pet[]) => {
         this.ownPetList = ownPetList;
         this.loadedPetList = ownPetList;
       });
 
 
-    this.ownPetService.showloadingImageSubject
+      this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
@@ -89,7 +91,7 @@ export class OwnAPetComponent implements OnInit {
   onRequestClick(petId: number) {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.ownPetService.getOwnaPatByPetId(petId)
+      this.sharedService.getPetByPetId(petId)
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult.find(p => p.PetId == petId);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
@@ -104,7 +106,7 @@ export class OwnAPetComponent implements OnInit {
           //set loader gif true
           this.showloadingImage=true;
 
-          this.ownPetService.OwnPetRequest(data, this.securityToken)
+          this.sharedService.Request(data, this.securityToken,'BuyPetRequest')
           .subscribe((result:any) => {
             var status=result.Status;
             var errorMessage=result.ErrorMessage;

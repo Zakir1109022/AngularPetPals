@@ -7,6 +7,7 @@ import { City } from '../search/city.model';
 import { Area } from '../search/area.model';
 import { Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-allied-service',
@@ -42,6 +43,7 @@ export class AlliedServiceComponent implements OnInit {
   constructor(
     private alliedService: AlliedService,
     private searchService: SearchService,
+    private sharedService:SharedService,
     public toastr: ToastsManager,
     vcr: ViewContainerRef,
     private router: Router
@@ -53,7 +55,8 @@ export class AlliedServiceComponent implements OnInit {
   }
 
   getStories() {
-    return this.alliedService.showAlliedServicesByPage(this.currentPage)
+    var body = { "UserType": "Allied" };
+    return this.sharedService.showServicesByPage(this.currentPage,body)
       .do(this.processData)
   }
 
@@ -67,13 +70,14 @@ export class AlliedServiceComponent implements OnInit {
 
   ngOnInit() {
 
-    this.alliedService.searchPetList
+    this.sharedService.searchPetList
       .subscribe((resultList: Pet[]) => {
         this.alliedServiceList = resultList;
         this.loadedPetList = this.alliedServiceList;
       })
 
-    this.alliedService.showloadingImageSubject
+
+      this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
@@ -235,7 +239,7 @@ export class AlliedServiceComponent implements OnInit {
   onRequestClick(petId: number) {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.alliedService.getAlliedPetByPetId(petId)
+      this.sharedService.getPetByPetId(petId)
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult.find(p => p.PetId == petId);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
@@ -250,7 +254,7 @@ export class AlliedServiceComponent implements OnInit {
            //set loader gif true
            this.showloadingImage=true;
           
-          this.alliedService.aliedServiceRequest(data, this.securityToken)
+          this.sharedService.Request(data, this.securityToken,'AlliedRequest')
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;

@@ -50,10 +50,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('emailId', result.EmailId);
           localStorage.setItem('RequesterOwnerId', result.UserId);
           console.log(result)
-
-          this.sharedService.securityToken.next(result.SecurityToken);
-          this.sharedService.emailId.next(result.EmailId);
-          this.sharedService.loginUser.next(result);
+          
           this.router.navigate(['/contact-us']);
         }
         else {

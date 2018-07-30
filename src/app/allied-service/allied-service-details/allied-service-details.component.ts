@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Pet } from '../../shared/pet.model';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AlliedService } from '../aliend-service.service';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-allied-service-details',
@@ -16,7 +16,7 @@ export class AlliedServiceDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private alliedService: AlliedService
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
@@ -25,13 +25,13 @@ export class AlliedServiceDetailsComponent implements OnInit {
         this.petId = params['id'];
       })
 
-    this.alliedService.getAlliedPetByPetId(this.petId)
+    this.sharedService.getPetByPetId(this.petId)
       .subscribe((petResult: Pet[]) => {
         this.pet = petResult.find(p => p.PetId == this.petId);
         console.log(petResult);
       })
 
-    this.alliedService.showloadingImageSubject
+    this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })

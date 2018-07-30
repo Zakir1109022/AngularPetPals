@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { OwnPetService } from '../own-a-pet.service';
 import { Pet } from '../../shared/pet.model';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-own-a-pet-details',
@@ -17,7 +17,7 @@ export class OwnAPetDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private ownPetService: OwnPetService
+    private sharedService:SharedService
   ) { }
 
   ngOnInit() {
@@ -26,13 +26,14 @@ export class OwnAPetDetailsComponent implements OnInit {
         this.petId = params['id'];
       })
 
-    this.ownPetService.getOwnaPatByPetId(this.petId)
+    this.sharedService.getPetByPetId(this.petId)
       .subscribe((petResult: Pet[]) => {
-        this.pet = petResult.find(p => p.PetId == this.petId);
+        console.log(petResult);
+        this.pet = petResult[0];
         
       })
 
-    this.ownPetService.showloadingImageSubject
+    this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })

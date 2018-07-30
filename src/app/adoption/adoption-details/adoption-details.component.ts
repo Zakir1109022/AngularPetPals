@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Pet } from '../../shared/pet.model';
-import { AdoptionService } from '../adoption.service';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-adoption-details',
@@ -16,7 +16,7 @@ export class AdoptionDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private adoptionService: AdoptionService
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
@@ -25,14 +25,14 @@ export class AdoptionDetailsComponent implements OnInit {
         this.petId = params['id'];
       })
 
-    this.adoptionService.getAdoptionsByPetId(this.petId)
+    this.sharedService.getPetByPetId(this.petId)
       .subscribe((petResult: Pet[]) => {
         this.pet = petResult.find(p => p.PetId == this.petId);
         console.log(petResult);
       })
 
     //initially load loader
-    this.adoptionService.showloadingImageSubject
+    this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })

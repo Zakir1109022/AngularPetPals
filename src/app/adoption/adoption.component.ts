@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { Pet } from '../shared/pet.model';
-import { AdoptionService } from './adoption.service';
 import { Router } from '@angular/router';
-import { OwnPetService } from '../own-a-pet/own-a-pet.service';
 import { ToastsManager } from 'ng2-toastr';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-adoption',
@@ -27,8 +26,7 @@ export class AdoptionComponent implements OnInit {
   scrollCallback;
 
   constructor(
-    private adoptionService: AdoptionService,
-    private ownpetService: OwnPetService,
+    private sharedService:SharedService,
     public toastr: ToastsManager,
     vcr: ViewContainerRef,
     private router: Router
@@ -40,7 +38,8 @@ export class AdoptionComponent implements OnInit {
 
 
   getStories() {
-    return this.adoptionService.showAdoptionsbyPage(this.currentPage)
+    var body = { "AvilableForAdotpion": 1 }
+    return this.sharedService.showServicesByPage(this.currentPage,body)
       .do(this.processData)
   }
 
@@ -55,20 +54,15 @@ export class AdoptionComponent implements OnInit {
 
 
   ngOnInit() {
-    this.adoptionService.searchPetList
+    this.sharedService.searchPetList
       .subscribe((adaptionList: Pet[]) => {
         this.adoptionList = adaptionList;
         this.loadedPetList = this.adoptionList;
       });
 
-    //initially load loader
-    this.adoptionService.showloadingImageSubject
-      .subscribe((trueorfalse: boolean) => {
-        this.showloadingImage = trueorfalse;
-      })
 
-    //after search load loader
-    this.ownpetService.showloadingImageSubject
+  
+    this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
@@ -101,7 +95,7 @@ export class AdoptionComponent implements OnInit {
   onRequestClick(petId: number) {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.adoptionService.getAdoptionsByPetId(petId)
+      this.sharedService.getPetByPetId(petId)
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult.find(p => p.PetId == petId);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
@@ -117,7 +111,7 @@ export class AdoptionComponent implements OnInit {
            this.showloadingImage=true;
           
 
-          this.adoptionService.adoptionRequest(data, this.securityToken)
+          this.sharedService.Request(data, this.securityToken,'AdoptPetRequest')
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;

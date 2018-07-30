@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FindPetLoveService } from './find-pet-love.service';
 import { Pet } from '../shared/pet.model';
 import { ToastsManager } from 'ng2-toastr';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-find-pet-love',
@@ -28,6 +29,7 @@ export class FindPetLoveComponent implements OnInit {
 
   constructor(
     private findPetLoveService: FindPetLoveService,
+    private sharedService:SharedService,
     public toastr: ToastsManager,
     vcr: ViewContainerRef,
     private router: Router
@@ -38,7 +40,8 @@ export class FindPetLoveComponent implements OnInit {
   }
 
   getStories() {
-    return this.findPetLoveService.showFindPatLoveByPage(this.currentPage)
+    var body = { "WillingToSell": 0 };
+    return this.sharedService.showServicesByPage(this.currentPage,body)
       .do(this.processData)
   }
 
@@ -51,20 +54,15 @@ export class FindPetLoveComponent implements OnInit {
 
 
   ngOnInit() {
-    this.findPetLoveService.searchPetList
+    this.sharedService.searchPetList
       .subscribe((ownPetList: Pet[]) => {
         this.findPetLoveList = ownPetList;
         this.loadedPetList = this.findPetLoveList;
       })
 
-    //initially load loader
-    this.findPetLoveService.showloadingImageSubject
-      .subscribe((trueorfalse: boolean) => {
-        this.showloadingImage = trueorfalse;
-      })
 
-    //after search load loader
-    this.findPetLoveService.showloadingImageSubject
+
+    this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
@@ -96,7 +94,7 @@ export class FindPetLoveComponent implements OnInit {
   onRequestClick(petId: number) {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.findPetLoveService.getFindPatLoveByPetId(petId)
+      this.sharedService.getPetByPetId(petId)
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult.find(p => p.PetId == petId);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
@@ -118,7 +116,7 @@ export class FindPetLoveComponent implements OnInit {
           //set loader gif true
           this.showloadingImage=true;
           
-          this.findPetLoveService.findPetLoveRequest(data, this.securityToken)
+          this.sharedService.Request(data, this.securityToken,'RequestPetMatingRequest')
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;
