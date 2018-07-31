@@ -8,7 +8,6 @@ import { Pet } from '../shared/pet.model';
 export class FindPetLoveService {
 
     private baseUrl="http://staging.mypetfriends.in/api/";
-    searchPetList = new Subject<Pet[]>();
 
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();

@@ -1,6 +1,5 @@
 import { Http, Response, Headers } from "@angular/http";
 import { Injectable } from "@angular/core";
-import { Breed } from "./breed.model";
 import 'rxjs/Rx';
 import { Observable, Subject } from 'rxjs'
 import { Country } from "./country.model";
@@ -12,12 +11,10 @@ import { Pet } from "../shared/pet.model";
 export class SearchService {
 
     private baseUrl="http://staging.mypetfriends.in/api/";
-    private BreedList: Breed[] = [];
-    private CountryList: Country[] = [];
-    private CityList: City[] = [];
 
 
     showloadingImageSubject = new Subject<boolean>();
+    dataHasOrNotSubject = new Subject<boolean>();
 
     constructor(private http: Http) { }
 
@@ -480,6 +477,462 @@ export class SearchService {
             });
     }
 
+
+
+
+
+    getOwnaPatByPetId(petId: number,componentName:string) {
+        var body = {};
+        if (componentName == "OwnAPetComponent") {
+            body = { "WillingToSell": 1, "PetId": petId }
+        }
+        if (componentName == "FindPetLoveComponent") {
+            body = { "WillingToSell": 0, "PetId": petId }
+        }
+
+        if (componentName == "AdoptionComponent") {
+            body = { "AvilableForAdotpion": 1,"PetId": petId }
+        }
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = '6742142b-0623-4adc-8e41-0b290330db7f';
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+            .map((response: Response) => {
+                const petList = response.json().Data;
+                let transferPetList: Pet[] = [];
+                for (let pet of petList) {
+                    transferPetList.push(new Pet(
+                        pet.AcceptedCount,
+                        pet.AreaId,
+                        pet.AreaName,
+                        pet.AvilableForAdotpion,
+                        pet.BreedId,
+                        pet.BreedName,
+                        pet.CityId,
+                        pet.CityName,
+                        pet.CountryId,
+                        pet.Colors,
+                        pet.CountryName,
+                        pet.Description,
+                        pet.Dummy,
+                        pet.ExerciseNeeds,
+                        pet.GoodWithDogs,
+                        pet.GroomingNeeds,
+                        pet.HeatingCycleFrom,
+                        pet.HeatingCycleTo,
+                        pet.Height,
+                        pet.IsFavorite,
+                        pet.KCIDetails,
+                        pet.KCIRegistered,
+                        pet.LastApprovedDate,
+                        pet.LastRequstedDate,
+                        pet.Latitude,
+                        pet.Longitude,
+                        pet.OfferPriceFrom,
+                        pet.OfferPriceTo,
+                        pet.PetDob,
+                        pet.PetGender,
+                        pet.PetId,
+                        pet.PetName,
+                        pet.PetOwnerId,
+                        pet.PetType,
+                        pet.PictrueName,
+                        pet.RequestedCount,
+                        pet.UserType,
+                        pet.WatchdogAbility,
+                        pet.Wight,
+                        pet.WillingToSell,
+                        pet.searchText
+                    ));
+                }
+                this.showloadingImageSubject.next(false);
+                return transferPetList;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+
+
+    getPetByPetType(petType: string,componentName:string) {
+        var body = {};
+        if (componentName == "OwnAPetComponent") {
+            body = { "WillingToSell": 1, "PetType": petType}
+        }
+        if (componentName == "FindPetLoveComponent") {
+            body = { "WillingToSell": 0, "PetType": petType }
+        }
+
+        if (componentName == "AdoptionComponent") {
+            body = { "AvilableForAdotpion": 1,"PetType": petType}
+        }
+
+        this.dataHasOrNotSubject.next(false);
+        this.showloadingImageSubject.next(true);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = '6742142b-0623-4adc-8e41-0b290330db7f';
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+            .map((response: Response) => {
+                const petList = response.json().Data;
+                let transferPetList: Pet[] = [];
+                for (let pet of petList) {
+                    transferPetList.push(new Pet(
+                        pet.AcceptedCount,
+                        pet.AreaId,
+                        pet.AreaName,
+                        pet.AvilableForAdotpion,
+                        pet.BreedId,
+                        pet.BreedName,
+                        pet.CityId,
+                        pet.CityName,
+                        pet.CountryId,
+                        pet.Colors,
+                        pet.CountryName,
+                        pet.Description,
+                        pet.Dummy,
+                        pet.ExerciseNeeds,
+                        pet.GoodWithDogs,
+                        pet.GroomingNeeds,
+                        pet.HeatingCycleFrom,
+                        pet.HeatingCycleTo,
+                        pet.Height,
+                        pet.IsFavorite,
+                        pet.KCIDetails,
+                        pet.KCIRegistered,
+                        pet.LastApprovedDate,
+                        pet.LastRequstedDate,
+                        pet.Latitude,
+                        pet.Longitude,
+                        pet.OfferPriceFrom,
+                        pet.OfferPriceTo,
+                        pet.PetDob,
+                        pet.PetGender,
+                        pet.PetId,
+                        pet.PetName,
+                        pet.PetOwnerId,
+                        pet.PetType,
+                        pet.PictrueName,
+                        pet.RequestedCount,
+                        pet.UserType,
+                        pet.WatchdogAbility,
+                        pet.Wight,
+                        pet.WillingToSell,
+                        pet.searchText
+                    ));
+                }
+
+                this.showloadingImageSubject.next(false);
+               
+                return transferPetList;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+
+    getPetByBreedName(breedName: string,componentName:string) {
+        var body = {};
+        if (componentName == "OwnAPetComponent") {
+            body = { "WillingToSell": 1, "BreedName": breedName}
+        }
+        if (componentName == "FindPetLoveComponent") {
+            body = { "WillingToSell": 0, "BreedName": breedName}
+        }
+
+        if (componentName == "AdoptionComponent") {
+            body = { "AvilableForAdotpion": 1,"BreedName": breedName}
+        }
+
+        this.dataHasOrNotSubject.next(false);
+        this.showloadingImageSubject.next(true);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = '6742142b-0623-4adc-8e41-0b290330db7f';
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+            .map((response: Response) => {
+                const petList = response.json().Data;
+                let transferPetList: Pet[] = [];
+                for (let pet of petList) {
+                    transferPetList.push(new Pet(
+                        pet.AcceptedCount,
+                        pet.AreaId,
+                        pet.AreaName,
+                        pet.AvilableForAdotpion,
+                        pet.BreedId,
+                        pet.BreedName,
+                        pet.CityId,
+                        pet.CityName,
+                        pet.CountryId,
+                        pet.Colors,
+                        pet.CountryName,
+                        pet.Description,
+                        pet.Dummy,
+                        pet.ExerciseNeeds,
+                        pet.GoodWithDogs,
+                        pet.GroomingNeeds,
+                        pet.HeatingCycleFrom,
+                        pet.HeatingCycleTo,
+                        pet.Height,
+                        pet.IsFavorite,
+                        pet.KCIDetails,
+                        pet.KCIRegistered,
+                        pet.LastApprovedDate,
+                        pet.LastRequstedDate,
+                        pet.Latitude,
+                        pet.Longitude,
+                        pet.OfferPriceFrom,
+                        pet.OfferPriceTo,
+                        pet.PetDob,
+                        pet.PetGender,
+                        pet.PetId,
+                        pet.PetName,
+                        pet.PetOwnerId,
+                        pet.PetType,
+                        pet.PictrueName,
+                        pet.RequestedCount,
+                        pet.UserType,
+                        pet.WatchdogAbility,
+                        pet.Wight,
+                        pet.WillingToSell,
+                        pet.searchText
+                    ));
+                }
+                this.showloadingImageSubject.next(false);
+               
+                return transferPetList;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+    getPetByGender(gender: string,componentName:string) {
+        var body = {};
+        if (componentName == "OwnAPetComponent") {
+            body = { "WillingToSell": 1, "PetGender": gender}
+        }
+        if (componentName == "FindPetLoveComponent") {
+            body = { "WillingToSell": 0, "PetGender": gender}
+        }
+
+        if (componentName == "AdoptionComponent") {
+            body = { "AvilableForAdotpion": 1,"PetGender": gender}
+        }
+
+        this.dataHasOrNotSubject.next(false);
+        this.showloadingImageSubject.next(true);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = '6742142b-0623-4adc-8e41-0b290330db7f';
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+            .map((response: Response) => {
+                const petList = response.json().Data;
+                let transferPetList: Pet[] = [];
+                for (let pet of petList) {
+                    transferPetList.push(new Pet(
+                        pet.AcceptedCount,
+                        pet.AreaId,
+                        pet.AreaName,
+                        pet.AvilableForAdotpion,
+                        pet.BreedId,
+                        pet.BreedName,
+                        pet.CityId,
+                        pet.CityName,
+                        pet.CountryId,
+                        pet.Colors,
+                        pet.CountryName,
+                        pet.Description,
+                        pet.Dummy,
+                        pet.ExerciseNeeds,
+                        pet.GoodWithDogs,
+                        pet.GroomingNeeds,
+                        pet.HeatingCycleFrom,
+                        pet.HeatingCycleTo,
+                        pet.Height,
+                        pet.IsFavorite,
+                        pet.KCIDetails,
+                        pet.KCIRegistered,
+                        pet.LastApprovedDate,
+                        pet.LastRequstedDate,
+                        pet.Latitude,
+                        pet.Longitude,
+                        pet.OfferPriceFrom,
+                        pet.OfferPriceTo,
+                        pet.PetDob,
+                        pet.PetGender,
+                        pet.PetId,
+                        pet.PetName,
+                        pet.PetOwnerId,
+                        pet.PetType,
+                        pet.PictrueName,
+                        pet.RequestedCount,
+                        pet.UserType,
+                        pet.WatchdogAbility,
+                        pet.Wight,
+                        pet.WillingToSell,
+                        pet.searchText
+                    ));
+                }
+                this.showloadingImageSubject.next(false);
+                
+                return transferPetList;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+
+
+    getPetByGeneral(KCI: boolean,componentName:string) {
+        var body = {};
+        if (componentName == "OwnAPetComponent") {
+            body = { "WillingToSell": 1, "KCIRegistered ": KCI }
+        }
+        if (componentName == "FindPetLoveComponent") {
+            body = { "WillingToSell": 0, "KCIRegistered ": KCI }
+        }
+
+        if (componentName == "AdoptionComponent") {
+            body = { "AvilableForAdotpion": 1,"KCIRegistered ": KCI }
+        }
+
+        this.dataHasOrNotSubject.next(false);
+        this.showloadingImageSubject.next(true);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = '6742142b-0623-4adc-8e41-0b290330db7f';
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+            .map((response: Response) => {
+                const petList = response.json().Data;
+                let transferPetList: Pet[] = [];
+                for (let pet of petList) {
+                    transferPetList.push(new Pet(
+                        pet.AcceptedCount,
+                        pet.AreaId,
+                        pet.AreaName,
+                        pet.AvilableForAdotpion,
+                        pet.BreedId,
+                        pet.BreedName,
+                        pet.CityId,
+                        pet.CityName,
+                        pet.CountryId,
+                        pet.Colors,
+                        pet.CountryName,
+                        pet.Description,
+                        pet.Dummy,
+                        pet.ExerciseNeeds,
+                        pet.GoodWithDogs,
+                        pet.GroomingNeeds,
+                        pet.HeatingCycleFrom,
+                        pet.HeatingCycleTo,
+                        pet.Height,
+                        pet.IsFavorite,
+                        pet.KCIDetails,
+                        pet.KCIRegistered,
+                        pet.LastApprovedDate,
+                        pet.LastRequstedDate,
+                        pet.Latitude,
+                        pet.Longitude,
+                        pet.OfferPriceFrom,
+                        pet.OfferPriceTo,
+                        pet.PetDob,
+                        pet.PetGender,
+                        pet.PetId,
+                        pet.PetName,
+                        pet.PetOwnerId,
+                        pet.PetType,
+                        pet.PictrueName,
+                        pet.RequestedCount,
+                        pet.UserType,
+                        pet.WatchdogAbility,
+                        pet.Wight,
+                        pet.WillingToSell,
+                        pet.searchText
+                    ));
+                }
+                this.showloadingImageSubject.next(false);
+               
+                return transferPetList;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+
+    getPetByPrice(priceFrom: number, priceTo: number,componentName:string) {
+        var body = {};
+        if (componentName == "OwnAPetComponent") {
+            body = { "WillingToSell": 1, "OfferPriceFrom": priceFrom, "OfferPriceTo": priceTo}
+        }
+        if (componentName == "FindPetLoveComponent") {
+            body = { "WillingToSell": 0, "OfferPriceFrom": priceFrom, "OfferPriceTo": priceTo}
+        }
+
+        if (componentName == "AdoptionComponent") {
+            body = { "AvilableForAdotpion": 1,"OfferPriceFrom": priceFrom, "OfferPriceTo": priceTo}
+        }
+
+        this.dataHasOrNotSubject.next(false);
+        this.showloadingImageSubject.next(true);
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const token = '6742142b-0623-4adc-8e41-0b290330db7f';
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+            .map((response: Response) => {
+                const petList = response.json().Data;
+                let transferPetList: Pet[] = [];
+                for (let pet of petList) {
+                    transferPetList.push(new Pet(
+                        pet.AcceptedCount,
+                        pet.AreaId,
+                        pet.AreaName,
+                        pet.AvilableForAdotpion,
+                        pet.BreedId,
+                        pet.BreedName,
+                        pet.CityId,
+                        pet.CityName,
+                        pet.CountryId,
+                        pet.Colors,
+                        pet.CountryName,
+                        pet.Description,
+                        pet.Dummy,
+                        pet.ExerciseNeeds,
+                        pet.GoodWithDogs,
+                        pet.GroomingNeeds,
+                        pet.HeatingCycleFrom,
+                        pet.HeatingCycleTo,
+                        pet.Height,
+                        pet.IsFavorite,
+                        pet.KCIDetails,
+                        pet.KCIRegistered,
+                        pet.LastApprovedDate,
+                        pet.LastRequstedDate,
+                        pet.Latitude,
+                        pet.Longitude,
+                        pet.OfferPriceFrom,
+                        pet.OfferPriceTo,
+                        pet.PetDob,
+                        pet.PetGender,
+                        pet.PetId,
+                        pet.PetName,
+                        pet.PetOwnerId,
+                        pet.PetType,
+                        pet.PictrueName,
+                        pet.RequestedCount,
+                        pet.UserType,
+                        pet.WatchdogAbility,
+                        pet.Wight,
+                        pet.WillingToSell,
+                        pet.searchText
+                    ));
+                }
+                this.showloadingImageSubject.next(false);
+               
+                return transferPetList;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
 
 
 

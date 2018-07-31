@@ -1,15 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Breed } from './breed.model';
 import { SearchService } from './search.service';
-import { Response } from '@angular/http';
 import { Country } from './country.model';
 import { City } from './city.model';
 import { Area } from './area.model';
-import { OwnPetService } from '../own-a-pet/own-a-pet.service';
 import { Pet } from '../shared/pet.model';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FindPetLoveService } from '../find-pet-love/find-pet-love.service';
-import { AdoptionService } from '../adoption/adoption.service';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-search',
@@ -41,9 +37,7 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
-    private ownPetService: OwnPetService,
-    private findPetLoveService: FindPetLoveService,
-    private adoptionService: AdoptionService,
+    private sharedService:SharedService,
     private route: ActivatedRoute
   ) {}
 
@@ -53,6 +47,7 @@ export class SearchComponent implements OnInit {
   }
 
 
+  //..................................................................................................//
   onFilterClick() {
     this.showOrHideFilter = !this.showOrHideFilter;
   }
@@ -138,13 +133,13 @@ export class SearchComponent implements OnInit {
     this.selectedKCI = isCheked;
   }
 
-
+//....................................................................................................//
 
 
   onPetTypeApply() {
     const searchItemList = [];
     for (var i = 0; i < this.checkedPetTypeItems.length; i++) {
-      this.ownPetService.getPetByPetType(this.checkedPetTypeItems[i])
+      this.searchService.getPetByPetType(this.checkedPetTypeItems[i],this.ComponentName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
         })
@@ -152,19 +147,18 @@ export class SearchComponent implements OnInit {
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
-      this.ownPetService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
-      this.findPetLoveService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
     if (this.ComponentName == "AdoptionComponent") {
-      this.adoptionService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
-
 
   }
 
@@ -172,7 +166,7 @@ export class SearchComponent implements OnInit {
   onBreedApply() {
     const searchItemList = [];
     for (var i = 0; i < this.checkedBreedItems.length; i++) {
-      this.ownPetService.getPetByBreedName(this.checkedBreedItems[i])
+      this.searchService.getPetByBreedName(this.checkedBreedItems[i],this.ComponentName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
         })
@@ -181,20 +175,18 @@ export class SearchComponent implements OnInit {
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
-      this.ownPetService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
-      this.findPetLoveService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
     if (this.ComponentName == "AdoptionComponent") {
-      this.adoptionService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
-
-
   }
 
 
@@ -202,7 +194,7 @@ export class SearchComponent implements OnInit {
   onGenderApply() {
     let searchItemList = [];
 
-    this.ownPetService.getPetByGender(this.selectedGender)
+    this.searchService.getPetByGender(this.selectedGender,this.ComponentName)
       .subscribe((resultList: Pet[]) => {
         searchItemList.push(...resultList);
       })
@@ -211,16 +203,16 @@ export class SearchComponent implements OnInit {
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
-      this.ownPetService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
-      this.findPetLoveService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
     if (this.ComponentName == "AdoptionComponent") {
-      this.adoptionService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
@@ -283,22 +275,22 @@ export class SearchComponent implements OnInit {
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
-      this.ownPetService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
-      this.findPetLoveService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
     }
 
     if (this.ComponentName == "AdoptionComponent") {
-      this.adoptionService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
   }
 
   onGeneralApply() {
     let searchItemList = [];
-    this.ownPetService.getPetByGeneral(this.selectedKCI)
+    this.searchService.getPetByGeneral(this.selectedKCI,this.ComponentName)
       .subscribe((resultList: Pet[]) => {
         searchItemList.push(...resultList);
       })
@@ -307,16 +299,16 @@ export class SearchComponent implements OnInit {
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
-      this.ownPetService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
-      this.findPetLoveService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
     if (this.ComponentName == "AdoptionComponent") {
-      this.adoptionService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
@@ -328,7 +320,7 @@ export class SearchComponent implements OnInit {
     const priceTo = this.priceToValue.nativeElement.value;
     let searchItemList = [];
 
-    this.ownPetService.getPetByPrice(priceFrom, priceTo)
+    this.searchService.getPetByPrice(priceFrom, priceTo,this.ComponentName)
       .subscribe((resultList: Pet[]) => {
         searchItemList.push(...resultList);
       })
@@ -337,16 +329,16 @@ export class SearchComponent implements OnInit {
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
-      this.ownPetService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
-      this.findPetLoveService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
 
     if (this.ComponentName == "AdoptionComponent") {
-      this.adoptionService.searchPetList.next(searchItemList);
+      this.sharedService.searchPetList.next(searchItemList);
 
     }
   }

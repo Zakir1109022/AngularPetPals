@@ -20,10 +20,11 @@ export class AlliedService {
     getPetByAlliedName(alliedName: string) {
         this.dataHasOrNotSubject.next(false);
         this.showloadingImageSubject.next(true);
+
         var body = { "UserType": "Allied", "BreedName": alliedName }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.get(this.baseUrl+'Utils/GetAllUserTypes?token=' + token, { headers: headers })
+        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token,body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
