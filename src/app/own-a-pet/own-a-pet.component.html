@@ -47,7 +47,9 @@
             </div>
             <div class="col-sm-6 petDetails">
               <label class="bold">Name:</label>
-              <label class="bold">{{ownPet.PetName}}</label>
+              <label class="bold" 
+              style="cursor: pointer;"
+              (click)="onDetailsClick(ownPet.PetId)">{{ownPet.PetName}}</label>
               <br>
               <label>Breed:</label>
               <label>{{ownPet.BreedName}}</label>

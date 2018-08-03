@@ -167,7 +167,10 @@
                     <img class="pointerCursor rounded-circle" (click)="onDetailsClick(alliedService.PetId)" src="{{alliedService.PictrueName}}" alt="Card image" height="100" width="100">
                   </div>
                   <div class="col-sm-6 petDetails">
-                   <label class="bold">Name:</label> <label class="bold">{{alliedService.PetName}}</label>
+                   <label class="bold">Name:</label>
+                   <label class="bold" 
+                   style="cursor: pointer;"
+                   (click)="onDetailsClick(alliedService.PetId)">{{alliedService.PetName}}</label>
                    <br>
                    <label>City:</label> <label>{{alliedService.CityName}}</label>
                    <br>

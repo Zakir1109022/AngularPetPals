@@ -45,7 +45,10 @@
                     <img class="pointerCursor rounded-circle" (click)="onDetailsClick(adoption.PetId)" src="{{adoption.PictrueName}}" alt="Card image" height="100" width="100">
                   </div>
                   <div class="col-sm-6 petDetails">
-                   <label class="bold">Name:</label> <label class="bold">{{adoption.PetName}}</label>
+                   <label class="bold">Name:</label> 
+                   <label class="bold" 
+                   style="cursor: pointer;"
+                   (click)="onDetailsClick(adoption.PetId)">{{adoption.PetName}}</label>
                    <br>
                    <label>Breed:</label> <label>{{adoption.BreedName}}</label>
                    <br>

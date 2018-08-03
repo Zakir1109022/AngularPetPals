@@ -42,7 +42,9 @@
             </div>
             <div class="col-sm-6 petDetails">
               <label class="bold">Name:</label>
-              <label class="bold">{{findPetLove.PetName}}</label>
+              <label class="bold" 
+              style="cursor: pointer;"
+              (click)="onDetailsClick(findPetLove.PetId)">{{findPetLove.PetName}}</label>
               <br>
               <label>Breed:</label>
               <label>{{findPetLove.BreedName}}</label>

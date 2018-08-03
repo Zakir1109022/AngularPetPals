@@ -66,10 +66,17 @@ export class LoginComponent implements OnInit {
   onSendForgotPassword() {
     const email = this.emailId.nativeElement.value;
 
-    this.authService.forgotPassword(email)
+    if(email !=null && email !='')
+    {
+      this.authService.forgotPassword(email)
       .subscribe((result) => {
         console.log(result);
-      })
+      });
+    }
+    else{
+      this.toastr.error('Please enter eamilId','');
+    }
+    
   }
 
 }

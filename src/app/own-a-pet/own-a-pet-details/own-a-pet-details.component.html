@@ -15,42 +15,62 @@
   </div>
 
   <div class="row">
-    <div class="offset-sm-4 col-sm-4">
-      <img class="img-thumbnail" src="{{pet.PictrueName}}" alt="Card image" height="400" width="400">
-
+    <div class="offset-sm-3 col-sm-6">
+      <img src="{{pet.PictrueName}}" alt="Pet image" height="300" width="100%">
+      <h4 style="background-color: honeydew;padding-bottom:7px;">{{pet.PetName}}</h4>
       <table class="table table-borderless">
         <tbody>
           <tr>
-            <td>Name:</td>
-            <td>{{pet.PetName}}</td>
+            <td style="color: #A50F2D;">Pet Type</td>
+            <td> </td>
+            <td>{{pet.PetType}}</td>
           </tr>
           <tr>
-            <td>Breed:</td>
+            <td style="color: #A50F2D;">Description</td>
+            <td> </td>
+            <td>{{pet.Description}}</td>
+          </tr>
+          <tr>
+            <td style="color: #A50F2D;">Breed</td>
+            <td> </td>
             <td>{{pet.BreedName}}</td>
           </tr>
           <tr>
-            <td>Age:</td>
+            <td style="color: #A50F2D;">Date of birth</td>
+            <td> </td>
             <td>{{pet.PetDob}}</td>
           </tr>
           <tr>
-            <td>City:</td>
-            <td>{{pet.CityName}}</td>
+            <td style="color: #A50F2D;">Gender</td>
+            <td> </td>
+            <td>{{pet.PetGender}}</td>
           </tr>
           <tr>
-            <td>AreaName:</td>
-            <td>{{pet.AreaName}}</td>
-          </tr>
+              <td style="color: #A50F2D;">Color</td>
+              <td> </td>
+              <td>{{pet.Colors}}</td>
+            </tr>
+            <tr>
+                <td style="color: #A50F2D;">City</td>
+                <td> </td>
+                <td>{{pet.CityName}}</td>
+              </tr>
+              <tr>
+                  <td style="color: #A50F2D;">Area Name</td>
+                  <td> </td>
+                  <td>{{pet.AreaName}}</td>
+                </tr>
         </tbody>
       </table>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-12">
       <br>
-      <div class="alert alert-success" style="text-align: center;">
+      <div class="alert alert-success" style="text-align: center;background-color:#A50F2D; ">
         <img class="pointerCursor" 
          data-toggle="modal" data-target="#ownpetRequestModal"
            src="./assets/image/Request.png" alt="" height="40" width="40">
