@@ -4,7 +4,7 @@ import { Country } from './country.model';
 import { City } from './city.model';
 import { Area } from './area.model';
 import { Pet } from '../shared/pet.model';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
@@ -35,11 +35,12 @@ export class SearchComponent implements OnInit {
 
   showloadingImage: boolean = true;
 
+
   constructor(
     private searchService: SearchService,
-    private sharedService:SharedService,
+    private sharedService: SharedService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     //get component Name from url
@@ -133,21 +134,31 @@ export class SearchComponent implements OnInit {
     this.selectedKCI = isCheked;
   }
 
-//....................................................................................................//
+  //....................................................................................................//
 
 
   onPetTypeApply() {
-    const searchItemList = [];
+    const searchItemList: Pet[] = [];
     for (var i = 0; i < this.checkedPetTypeItems.length; i++) {
-      this.searchService.getPetByPetType(this.checkedPetTypeItems[i],this.ComponentName)
+      this.searchService.getPetByPetType(this.checkedPetTypeItems[i], this.ComponentName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.sharedService.dataHasOrNotSubject.next(true);
+          }
+          else {
+            this.sharedService.dataHasOrNotSubject.next(false);
+          }
         })
     }
+
+    this.sharedService.showloadingImageSubject.next(false)
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
       this.sharedService.searchPetList.next(searchItemList);
+
 
     }
     if (this.ComponentName == "FindPetLoveComponent") {
@@ -159,20 +170,32 @@ export class SearchComponent implements OnInit {
       this.sharedService.searchPetList.next(searchItemList);
 
     }
+
+
 
   }
 
 
   onBreedApply() {
-    const searchItemList = [];
+    let searchItemList: Pet[] = [];
     for (var i = 0; i < this.checkedBreedItems.length; i++) {
-      this.searchService.getPetByBreedName(this.checkedBreedItems[i],this.ComponentName)
+      this.searchService.getPetByBreedName(this.checkedBreedItems[i], this.ComponentName)
         .subscribe((resultList: Pet[]) => {
+
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.sharedService.dataHasOrNotSubject.next(true);
+          }
+          else {
+            this.sharedService.dataHasOrNotSubject.next(false);
+          }
         })
     }
 
 
+
+    this.sharedService.showloadingImageSubject.next(false)
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
       this.sharedService.searchPetList.next(searchItemList);
@@ -187,19 +210,29 @@ export class SearchComponent implements OnInit {
       this.sharedService.searchPetList.next(searchItemList);
 
     }
+
   }
 
 
 
   onGenderApply() {
-    let searchItemList = [];
+    let searchItemList: Pet[] = [];
 
-    this.searchService.getPetByGender(this.selectedGender,this.ComponentName)
+    this.searchService.getPetByGender(this.selectedGender, this.ComponentName)
       .subscribe((resultList: Pet[]) => {
+
         searchItemList.push(...resultList);
+
+        if (resultList.length == 0) {
+          this.sharedService.dataHasOrNotSubject.next(true);
+        }
+        else {
+          this.sharedService.dataHasOrNotSubject.next(false);
+        }
       })
 
 
+      this.sharedService.showloadingImageSubject.next(false)
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
@@ -219,12 +252,20 @@ export class SearchComponent implements OnInit {
   }
 
   onLocationApply() {
-    let searchItemList = [];
+    let searchItemList: Pet[] = [];
 
     if (this.selectedCountryName != '' && this.selectedCityName != '' && this.selectedAreaName != '') {
       this.searchService.getPetByLocation(this.selectedCountryName, this.selectedCityName, this.selectedAreaName, this.ComponentName)
         .subscribe((resultList: Pet[]) => {
+
           searchItemList.push(...resultList);
+
+          if (resultList.length == 0) {
+            this.sharedService.dataHasOrNotSubject.next(true);
+          }
+          else {
+            this.sharedService.dataHasOrNotSubject.next(false);
+          }
         })
 
       this.selectedCountryName = '';
@@ -236,7 +277,15 @@ export class SearchComponent implements OnInit {
     if (this.selectedCityName != '' && this.selectedAreaName != '') {
       this.searchService.getPetByCityAndArea(this.selectedCityName, this.selectedAreaName, this.ComponentName)
         .subscribe((resultList: Pet[]) => {
+
           searchItemList.push(...resultList);
+
+          if (resultList.length == 0) {
+            this.sharedService.dataHasOrNotSubject.next(true);
+          }
+          else {
+            this.sharedService.dataHasOrNotSubject.next(false);
+          }
         })
 
       this.selectedCityName = '';
@@ -247,7 +296,15 @@ export class SearchComponent implements OnInit {
     if (this.selectedCountryName != '') {
       this.searchService.getPetByCountry(this.selectedCountryName, this.ComponentName)
         .subscribe((resultList: Pet[]) => {
+
           searchItemList.push(...resultList);
+          if(resultList.length==0)
+        {
+          this.sharedService.dataHasOrNotSubject.next(true);
+        }
+        else{
+          this.sharedService.dataHasOrNotSubject.next(false);
+        }
         })
 
       this.selectedCountryName = '';
@@ -256,7 +313,15 @@ export class SearchComponent implements OnInit {
     if (this.selectedCityName != '') {
       this.searchService.getPetByCity(this.selectedCityName, this.ComponentName)
         .subscribe((resultList: Pet[]) => {
+
           searchItemList.push(...resultList);
+          if(resultList.length==0)
+        {
+          this.sharedService.dataHasOrNotSubject.next(true);
+        }
+        else{
+          this.sharedService.dataHasOrNotSubject.next(false);
+        }
         })
 
       this.selectedCityName = '';
@@ -265,13 +330,22 @@ export class SearchComponent implements OnInit {
     if (this.selectedAreaName != '') {
       this.searchService.getPetByArea(this.selectedAreaName, this.ComponentName)
         .subscribe((resultList: Pet[]) => {
+
           searchItemList.push(...resultList);
+          if(resultList.length==0)
+        {
+          this.sharedService.dataHasOrNotSubject.next(true);
+        }
+        else{
+          this.sharedService.dataHasOrNotSubject.next(false);
+        }
         })
 
       this.selectedAreaName = '';
     }
 
 
+    this.sharedService.showloadingImageSubject.next(false)
 
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
@@ -286,17 +360,27 @@ export class SearchComponent implements OnInit {
       this.sharedService.searchPetList.next(searchItemList);
 
     }
+
   }
 
   onGeneralApply() {
-    let searchItemList = [];
-    this.searchService.getPetByGeneral(this.selectedKCI,this.ComponentName)
+    let searchItemList:Pet[] = [];
+    this.searchService.getPetByGeneral(this.selectedKCI, this.ComponentName)
       .subscribe((resultList: Pet[]) => {
+
         searchItemList.push(...resultList);
+
+        if(resultList.length==0)
+        {
+          this.sharedService.dataHasOrNotSubject.next(true);
+        }
+        else{
+          this.sharedService.dataHasOrNotSubject.next(false);
+        }
       })
 
 
-
+      this.sharedService.showloadingImageSubject.next(false)
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
       this.sharedService.searchPetList.next(searchItemList);
@@ -311,6 +395,7 @@ export class SearchComponent implements OnInit {
       this.sharedService.searchPetList.next(searchItemList);
 
     }
+
 
   }
 
@@ -318,15 +403,24 @@ export class SearchComponent implements OnInit {
   onPriceApply() {
     const priceFrom = this.priceFromValue.nativeElement.value;
     const priceTo = this.priceToValue.nativeElement.value;
-    let searchItemList = [];
+    let searchItemList:Pet[] = [];
 
-    this.searchService.getPetByPrice(priceFrom, priceTo,this.ComponentName)
+    this.searchService.getPetByPrice(priceFrom, priceTo, this.ComponentName)
       .subscribe((resultList: Pet[]) => {
+
         searchItemList.push(...resultList);
+
+        if(resultList.length==0)
+        {
+          this.sharedService.dataHasOrNotSubject.next(true);
+        }
+        else{
+          this.sharedService.dataHasOrNotSubject.next(false);
+        }
       })
 
 
-
+      this.sharedService.showloadingImageSubject.next(false)
     //call service
     if (this.ComponentName == "OwnAPetComponent") {
       this.sharedService.searchPetList.next(searchItemList);
@@ -341,6 +435,7 @@ export class SearchComponent implements OnInit {
       this.sharedService.searchPetList.next(searchItemList);
 
     }
+
   }
 
 }

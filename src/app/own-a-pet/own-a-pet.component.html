@@ -1,16 +1,23 @@
 <div class="container" style="margin-top: 10px;">
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-sm-3">
       <h3 style="text-align: left; color:#A50F2D;">Own a Pet</h3>
     </div>
-    <div class="col-sm-4">
-      <input #searchInput
-      class="form-control mr-sm-2" 
-      type="text"
-       placeholder="Search"
-       (keyup)="onSearchKeyPress()">
+    <div class="col-sm-6">
+        <div class="input-group">
+      <input #searchInput class="form-control"
+      style="background-color: #A50F2D;color: white;"
+       type="text" placeholder="Search"
+        (keyup)="onSearchKeyPress()">
+        <button class="input-group-addon"
+        style="background-color: #A50F2D">
+          <i class="fa fa-search"></i>
+          </button>
+      </div>
     </div>
-    <div class="col-sm-3"></div>
+    <div class="col-sm-3">
+        
+    </div>
   </div>
 </div>
 
@@ -30,14 +37,9 @@
 
 <div class="container" *ngIf="!dataHasOrNot; else elseBlock">
   <div class="row">
-    <div class="offset-sm-2 col-sm-8"
-    id="infinite-scroller"
-    appInfiniteScroller
-    scrollPerecnt="70"
-    immediateCallback="true"
-    [scrollCallback]="scrollCallback">
-      <div class="card" 
-        *ngFor="let ownPet of ownPetList">
+    <div class="offset-sm-2 col-sm-8" id="infinite-scroller" appInfiniteScroller scrollPerecnt="70" immediateCallback="true"
+      [scrollCallback]="scrollCallback">
+      <div class="card" *ngFor="let ownPet of ownPetList">
         <div class="card-body">
           <div class="row">
             <div class="col-sm-3 pointerCursor petImage" (click)="onDetailsClick(ownPet.PetId)">
@@ -60,11 +62,37 @@
               <label>{{ownPet.AreaName}}</label>
             </div>
             <div class="col-sm-3 petContact">
-                <label>Request</label>
-                <img class="pointerCursor" (click)="onRequestClick(ownPet.PetId)" src="./assets/image/money.png" alt="" height="40" width="40">
-                <br>
               <label>Contact</label>
-              <img class="pointerCursor" (click)="onContactClick()" src="./assets/image/Request.png" alt="" height="40" width="40">
+              <img class="pointerCursor" data-toggle="modal" data-target="#ownpetRequestModal"  src="./assets/image/Request.png"
+                alt="" height="40" width="40">
+
+
+              <!-- The Own Pet Modal -->
+              <div class="modal fade" id="ownpetRequestModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Own a Pet Request</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <h5>Are you sure you want to contact this vendor</h5>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onRequestClick(ownPet.PetId)">Send</button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

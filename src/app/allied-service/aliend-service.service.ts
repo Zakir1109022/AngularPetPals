@@ -18,8 +18,6 @@ export class AlliedService {
 
 
     getPetByAlliedName(alliedName: string) {
-        this.dataHasOrNotSubject.next(false);
-        this.showloadingImageSubject.next(true);
 
         var body = { "UserType": "Allied", "BreedName": alliedName }
         const headers = new Headers({ 'Content-Type': 'application/json' });
@@ -84,8 +82,7 @@ export class AlliedService {
 
 
     getPetByLocation(country: string, city: string, area: string) {
-        this.dataHasOrNotSubject.next(false);
-        this.showloadingImageSubject.next(true);
+
         var body = { "UserType": "Allied", "AreaName": area, "CityName": city, "CountryName": country }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
@@ -201,6 +198,8 @@ export class AlliedService {
                         pet.searchText
                     ));
                 }
+
+                this.showloadingImageSubject.next(false);
                 return transferPetList;
             })
             .catch((error: Response) => {
@@ -262,6 +261,8 @@ export class AlliedService {
                         pet.searchText
                     ));
                 }
+
+                this.showloadingImageSubject.next(false);
                 return transferPetList;
             })
             .catch((error: Response) => {
@@ -323,6 +324,8 @@ export class AlliedService {
                         pet.searchText
                     ));
                 }
+
+                this.showloadingImageSubject.next(false);
                 return transferPetList;
             })
             .catch((error: Response) => {
@@ -384,6 +387,8 @@ export class AlliedService {
                         pet.searchText
                     ));
                 }
+
+                this.showloadingImageSubject.next(false);
                 return transferPetList;
             })
             .catch((error: Response) => {

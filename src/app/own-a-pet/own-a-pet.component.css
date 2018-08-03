@@ -26,6 +26,7 @@
   list-style: none;
 }
 
+
 @media screen and (max-width: 480px) {
     .petImage {
         text-align: left;

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { User } from "./user.model";
-import { Observable } from 'rxjs'
+import { Observable, Subject } from 'rxjs'
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 
 
@@ -11,7 +11,8 @@ export class AuthService {
 
 
     token: string;
-
+    tokenValue = new Subject<string>();
+    emailValue = new Subject<string>();
 
     constructor(private http: Http) {
 
@@ -88,7 +89,16 @@ export class AuthService {
         return this.http.post(this.baseUrl + 'MobileAccount/Login?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json().Data;
-                this.token=jsonResult.SecurityToken;
+
+                //for authentication
+                if(jsonResult !=null)
+                {
+                    this.token=jsonResult.SecurityToken;
+                    this.tokenValue.next(this.token);
+                    this.emailValue.next(jsonResult.EmailId);
+                }
+               
+
                 return jsonResult;
             })
             .catch((error: Response) => {
@@ -100,7 +110,6 @@ export class AuthService {
 
 
     saveImage(file: File) {
-
         let formData: FormData = new FormData();  
         formData.append('Content-Disposition', file);
         formData.append('name', 'DemoFieldName');

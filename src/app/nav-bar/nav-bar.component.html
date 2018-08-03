@@ -11,6 +11,10 @@
       routerLink="/sign-in">Sign In</a>
     </li>
     <li *ngIf="securityToken" class="nav-item" routerLinkActive="active">
+      <a class="nav-link pointerCursor"
+      routerLink="/contact-us"  >Contact us</a>
+    </li>
+    <li *ngIf="securityToken" class="nav-item" routerLinkActive="active">
         <a class="nav-link pointerCursor" style="text-decoration: underline;" >{{emailId}}</a>
       </li>
     <li *ngIf="securityToken" class="nav-item" routerLinkActive="active">

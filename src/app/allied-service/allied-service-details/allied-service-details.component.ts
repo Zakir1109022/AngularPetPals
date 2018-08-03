@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Pet } from '../../shared/pet.model';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SharedService } from '../../shared/shared.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-allied-service-details',
@@ -14,10 +15,19 @@ export class AlliedServiceDetailsComponent implements OnInit {
   pet: Pet;
   showloadingImage: boolean = true;
 
+  securityToken: string;
+  loginUserId: string;
+
   constructor(
     private route: ActivatedRoute,
-    private sharedService: SharedService
-  ) { }
+    private sharedService: SharedService,
+    private toastr:ToastsManager,
+    vcr: ViewContainerRef,
+    private router: Router
+  ) { 
+
+    this.toastr.setRootViewContainerRef(vcr);
+  }
 
   ngOnInit() {
     this.route.params
@@ -35,6 +45,46 @@ export class AlliedServiceDetailsComponent implements OnInit {
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
+
+  }
+
+  
+  onRequestClick(petId: number) {
+    this.securityToken = localStorage.getItem('token');
+    if (this.securityToken != null) {
+      this.sharedService.getPetByPetId(petId)
+        .subscribe((petResult: Pet[]) => {
+          this.pet = petResult.find(p => p.PetId == petId);
+          this.loginUserId = localStorage.getItem('RequesterOwnerId');
+
+          var data = {
+            "PetId": this.pet.PetId,
+            "PetOwnerId": this.pet.PetOwnerId,
+            "RequesterOwnerId": this.loginUserId,
+            "RequesterPetId": ""
+          }
+
+           //set loader gif true
+           this.showloadingImage=true;
+          
+          this.sharedService.Request(data, this.securityToken,'AlliedRequest')
+            .subscribe((result: any) => {
+              var status = result.Status;
+              var errorMessage = result.ErrorMessage;
+              if (status != 'Errored') {
+                this.toastr.success(status, '');
+              }
+              else {
+                this.toastr.warning(errorMessage, '');
+              }
+
+            });
+
+        });
+    }
+    else {
+      this.router.navigate(['/sign-in']);
+    }
 
   }
 

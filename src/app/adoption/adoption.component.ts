@@ -67,6 +67,10 @@ export class AdoptionComponent implements OnInit {
         this.showloadingImage = trueorfalse;
       })
 
+      this.sharedService.dataHasOrNotSubject
+      .subscribe((trueorfalse: boolean) => {
+        this.dataHasOrNot = trueorfalse;
+      })
 
   }
 
@@ -85,6 +89,14 @@ export class AdoptionComponent implements OnInit {
         // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
+
+    if(this.adoptionList.length ==0)
+    {
+      this.dataHasOrNot=true;
+    }
+    else{
+      this.dataHasOrNot=false;
+    }
   }
 
   onDetailsClick(petId: number) {
@@ -132,15 +144,5 @@ export class AdoptionComponent implements OnInit {
 
   }
 
-
-  onContactClick() {
-    this.securityToken = localStorage.getItem('token');
-    if (this.securityToken != null) {
-      this.router.navigate(['/contact-us']);
-    }
-    else {
-      this.router.navigate(['/sign-in']);
-    }
-  }
 
 }

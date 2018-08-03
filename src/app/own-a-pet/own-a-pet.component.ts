@@ -4,6 +4,7 @@ import { Pet } from '../shared/pet.model';
 import { Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
 import { SharedService } from '../shared/shared.service';
+import { SearchService } from '../search/search.service';
 
 
 @Component({
@@ -52,10 +53,13 @@ export class OwnAPetComponent implements OnInit {
 
 
   ngOnInit() {
+
+    //filter dat
     this.sharedService.searchPetList
       .subscribe((ownPetList: Pet[]) => {
         this.ownPetList = ownPetList;
         this.loadedPetList = ownPetList;
+
       });
 
 
@@ -63,6 +67,12 @@ export class OwnAPetComponent implements OnInit {
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
+
+      this.sharedService.dataHasOrNotSubject
+      .subscribe((trueorfalse: boolean) => {
+        this.dataHasOrNot = trueorfalse;
+      })
+
 
   }
 
@@ -81,6 +91,14 @@ export class OwnAPetComponent implements OnInit {
         // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
+
+    if(this.ownPetList.length ==0)
+    {
+      this.dataHasOrNot=true;
+    }
+    else{
+      this.dataHasOrNot=false;
+    }
   }
 
   onDetailsClick(petId: number) {
@@ -124,17 +142,6 @@ export class OwnAPetComponent implements OnInit {
       this.router.navigate(['/sign-in']);
     }
 
-  }
-
-
-  onContactClick() {
-    this.securityToken = localStorage.getItem('token');
-    if (this.securityToken != null) {
-      this.router.navigate(['/contact-us']);
-    }
-    else {
-      this.router.navigate(['/sign-in']);
-    }
   }
 
 

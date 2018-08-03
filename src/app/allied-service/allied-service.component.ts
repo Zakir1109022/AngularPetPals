@@ -82,6 +82,13 @@ export class AlliedServiceComponent implements OnInit {
         this.showloadingImage = trueorfalse;
       })
 
+
+      this.alliedService.showloadingImageSubject
+      .subscribe((result:boolean)=>{
+        this.showloadingImage=result;
+      })
+
+
   }
 
 
@@ -144,26 +151,42 @@ export class AlliedServiceComponent implements OnInit {
 
 
   onAlliedPalsApply() {
-    const searchItemList = [];
+    let searchItemList:Pet[] = [];
+    this.showloadingImage=true;
+
     for (var i = 0; i < this.checkedAlliedPalsItems.length; i++) {
       this.alliedService.getPetByAlliedName(this.checkedAlliedPalsItems[i])
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+           this.dataHasOrNot=true
+          }
+          else {
+            this.dataHasOrNot=false
+          }
         })
     }
 
     this.alliedServiceList = searchItemList;
-    console.log(searchItemList);
   }
 
 
   onLocationApply() {
-    const searchItemList = [];
+    let searchItemList:Pet[] = [];
+    this.showloadingImage=true;
 
     if (this.selectedCountryName != '' && this.selectedCityName != '' && this.selectedAreaName != '') {
       this.alliedService.getPetByLocation(this.selectedCountryName, this.selectedCityName, this.selectedAreaName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.dataHasOrNot=true
+           }
+           else {
+             this.dataHasOrNot=false
+           }
         })
 
       this.selectedCountryName = '';
@@ -176,6 +199,13 @@ export class AlliedServiceComponent implements OnInit {
       this.alliedService.getPetByCityAndArea(this.selectedCityName, this.selectedAreaName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.dataHasOrNot=true
+           }
+           else {
+             this.dataHasOrNot=false
+           }
         })
 
       this.selectedCityName = '';
@@ -188,6 +218,13 @@ export class AlliedServiceComponent implements OnInit {
       this.alliedService.getPetByCountry(this.selectedCountryName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.dataHasOrNot=true
+           }
+           else {
+             this.dataHasOrNot=false
+           }
         })
 
       this.selectedCountryName = '';
@@ -197,6 +234,13 @@ export class AlliedServiceComponent implements OnInit {
       this.alliedService.getPetByCity(this.selectedCityName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.dataHasOrNot=true
+           }
+           else {
+             this.dataHasOrNot=false
+           }
         })
 
       this.selectedCityName = '';
@@ -206,6 +250,13 @@ export class AlliedServiceComponent implements OnInit {
       this.alliedService.getPetByArea(this.selectedAreaName)
         .subscribe((resultList: Pet[]) => {
           searchItemList.push(...resultList);
+
+          if (searchItemList.length == 0) {
+            this.dataHasOrNot=true
+           }
+           else {
+             this.dataHasOrNot=false
+           }
         })
 
       this.selectedAreaName = '';
@@ -213,6 +264,7 @@ export class AlliedServiceComponent implements OnInit {
 
 
     this.alliedService.searchPetList.next(searchItemList);
+    this.alliedServiceList = searchItemList;
 
   }
 
@@ -232,6 +284,14 @@ export class AlliedServiceComponent implements OnInit {
         item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
+
+    if(this.alliedServiceList.length ==0)
+    {
+      this.dataHasOrNot=true;
+    }
+    else{
+      this.dataHasOrNot=false;
+    }
 
   }
 
@@ -275,15 +335,5 @@ export class AlliedServiceComponent implements OnInit {
 
   }
 
-
-  onContactClick() {
-    this.securityToken = localStorage.getItem('token');
-    if (this.securityToken != null) {
-      this.router.navigate(['/contact-us']);
-    }
-    else {
-      this.router.navigate(['/sign-in']);
-    }
-  }
 
 }

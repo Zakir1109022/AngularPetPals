@@ -67,6 +67,12 @@ export class FindPetLoveComponent implements OnInit {
         this.showloadingImage = trueorfalse;
       })
 
+
+      this.sharedService.dataHasOrNotSubject
+      .subscribe((trueorfalse: boolean) => {
+        this.dataHasOrNot = trueorfalse;
+      })
+
   }
 
   assignCopy() {
@@ -84,6 +90,15 @@ export class FindPetLoveComponent implements OnInit {
         // item.CountryName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
+
+    if(this.findPetLoveList.length ==0)
+    {
+      this.dataHasOrNot=true;
+    }
+    else{
+      this.dataHasOrNot=false;
+    }
+
   }
 
   onDetailsClick(petId: number) {
@@ -96,7 +111,7 @@ export class FindPetLoveComponent implements OnInit {
     if (this.securityToken != null) {
       this.sharedService.getPetByPetId(petId)
         .subscribe((petResult: Pet[]) => {
-          this.pet = petResult.find(p => p.PetId == petId);
+          this.pet = petResult[0];
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
 
           let petOwner_petId: number;
@@ -137,13 +152,6 @@ export class FindPetLoveComponent implements OnInit {
 
   }
 
-  onContactClick() {
-    this.securityToken = localStorage.getItem('token');
-    if (this.securityToken != null) {
-      this.router.navigate(['/contact-us']);
-    }
-    else {
-      this.router.navigate(['/sign-in']);
-    }
-  }
+
+  
 }

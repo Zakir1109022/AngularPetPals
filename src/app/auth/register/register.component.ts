@@ -1,11 +1,12 @@
 import { Country } from './../../search/country.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { User } from '../user.model';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { SearchService } from '../../search/search.service';
 import { City } from '../../search/city.model';
 import { Area } from '../../search/area.model';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-register',
@@ -60,7 +61,12 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private searchService: SearchService,
-  ) { }
+    public toastr: ToastsManager,
+    vcr: ViewContainerRef,
+  ) {
+    this.toastr.setRootViewContainerRef(vcr);
+
+   }
 
   ngOnInit() {
 
@@ -162,8 +168,15 @@ export class RegisterComponent implements OnInit {
 
     this.authService.signUp(this.user)
     .subscribe((result:any)=>{
-      this.showloadingImage = false;
-      window.alert('success');
+      if(result !=null)
+      {
+        this.showloadingImage = false;
+        this.toastr.success('success', '');
+      }
+      else{
+        this.toastr.error('an error ocuured', '');
+      }
+     
     });
 
 
