@@ -13,6 +13,7 @@ export class AlliedServiceDetailsComponent implements OnInit {
 
   petId: number;
   pet: Pet;
+  public petImage:string;
   showloadingImage: boolean = true;
 
   securityToken: string;
@@ -35,11 +36,15 @@ export class AlliedServiceDetailsComponent implements OnInit {
         this.petId = params['id'];
       })
 
+      this.petImage=localStorage.getItem('petImage');
+
+
     this.sharedService.getPetByPetId(this.petId)
       .subscribe((petResult: Pet[]) => {
         this.pet = petResult.find(p => p.PetId == this.petId);
-        console.log(petResult);
+        console.log(this.pet);
       })
+
 
     this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {

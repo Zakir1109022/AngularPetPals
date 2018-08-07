@@ -97,7 +97,8 @@ export class AlliedServiceComponent implements OnInit {
   }
 
 
-  onDetailsClick(petId: number) {
+  onDetailsClick(petId: number,petImage:string) {
+    localStorage.setItem('petImage',petImage);
     this.router.navigate(['/allied-service-details/' + petId]);
   }
 

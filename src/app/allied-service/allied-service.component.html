@@ -164,13 +164,15 @@
           <div class="card-body">
               <div class="row">
                   <div class="col-sm-3 petImage">
-                    <img class="pointerCursor rounded-circle" (click)="onDetailsClick(alliedService.PetId)" src="{{alliedService.PictrueName}}" alt="Card image" height="100" width="100">
+                    <img class="pointerCursor rounded-circle" (click)="onDetailsClick(alliedService.PetId,alliedService.PictrueName)" src="{{alliedService.PictrueName}}" alt="Card image" height="100" width="100">
                   </div>
                   <div class="col-sm-6 petDetails">
                    <label class="bold">Name:</label>
                    <label class="bold" 
                    style="cursor: pointer;"
-                   (click)="onDetailsClick(alliedService.PetId)">{{alliedService.PetName}}</label>
+                   (click)="onDetailsClick(alliedService.PetId,alliedService.PictrueName)">{{alliedService.PetName}}</label>
+                   <br>
+                   <label>Description:-</label> <label>{{alliedService.Description}}</label>
                    <br>
                    <label>City:</label> <label>{{alliedService.CityName}}</label>
                    <br>
