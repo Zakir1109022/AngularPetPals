@@ -37,6 +37,7 @@ import { ContactUsService } from './contact-us/contact-us.service';
 import { AuthGuard } from './auth/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import { MyRequestComponent } from './my-request/my-request.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import {ToastModule} from 'ng2-toastr/ng2-toastr';
     RegisterComponent,
     LoginComponent,
     InfiniteScrollerDirective,
-    ContactUsComponent
+    ContactUsComponent,
+    MyRequestComponent
   ],
   imports: [
     BrowserModule,
