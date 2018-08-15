@@ -1,6 +1,6 @@
 import { Http, Response, Headers } from '@angular/http'
 import { Injectable } from "@angular/core";
-import 'rxjs/Rx';
+import 'rxjs';
 import { Observable, Subject } from 'rxjs'
 import { Pet } from '../shared/pet.model';
 

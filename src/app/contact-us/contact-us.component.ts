@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { ContactUsService } from './contact-us.service';
+import { ToastsManager } from '../../../node_modules/ng2-toastr';
 
 @Component({
   selector: 'app-contact-us',
@@ -11,7 +12,13 @@ export class ContactUsComponent implements OnInit {
   @ViewChild('subject') subjectValue: ElementRef;
   @ViewChild('message') MessageValue: ElementRef;
 
-  constructor(private contactUsService:ContactUsService) { }
+  constructor(
+    private contactUsService:ContactUsService,
+    public toastr: ToastsManager,
+    vcr: ViewContainerRef
+  ) { 
+    this.toastr.setRootViewContainerRef(vcr);
+  }
 
   ngOnInit() {
   }
@@ -23,8 +30,14 @@ export class ContactUsComponent implements OnInit {
 
     this.contactUsService.contactUs(subject,message,securityToken)
     .subscribe((result:any)=>{
-      window.alert('Success');
-      console.log(result);
+      console.log(result)
+      let status = result.Status;
+      if (status != "Errored") {
+        this.toastr.success(result.Data, 'Success')
+     }
+     else{
+      this.toastr.error(result.ErrorMessage, 'Error')
+     }
     })
 
   }

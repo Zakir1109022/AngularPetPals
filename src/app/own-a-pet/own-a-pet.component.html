@@ -65,35 +65,13 @@
             </div>
             <div class="col-sm-3 petContact">
               <label>Contact</label>
-              <img class="pointerCursor" data-toggle="modal" data-target="#ownpetRequestModal"  src="./assets/image/Request.png"
+              <img class="pointerCursor" data-toggle="modal" data-target="#ownpetRequestModal"
+              (click)="onContactClick(ownPet.PetId)"  
+              src="./assets/image/Request.png"
                 alt="" height="40" width="40">
 
 
-              <!-- The Own Pet Modal -->
-              <div class="modal fade" id="ownpetRequestModal">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                      <h4 class="modal-title">Own a Pet Request</h4>
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                      <h5>Are you sure you want to contact this vendor</h5>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onRequestClick(ownPet.PetId)">Send</button>
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
+             
 
             </div>
           </div>
@@ -101,6 +79,31 @@
       </div>
     </div>
     <div class="col-sm-2">
+       <!-- The Own Pet Modal -->
+       <div class="modal fade" id="ownpetRequestModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Own a Pet Request</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                <h5>Are you sure you want to contact this vendor</h5>
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onRequestClick()">Send</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
     </div>
   </div>
 </div>

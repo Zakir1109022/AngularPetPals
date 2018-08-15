@@ -1,4 +1,4 @@
-import { Country } from './../../search/country.model';
+import { Country } from '../../search/country.model';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { User } from '../user.model';
 import { NgForm } from '@angular/forms';
@@ -55,7 +55,6 @@ export class RegisterComponent implements OnInit {
   uploadedFile: File;
   imagePath:string="#";
 
-  showloadingImage: boolean = false;
 
 
   constructor(
@@ -128,7 +127,6 @@ export class RegisterComponent implements OnInit {
 
 
   onSubmit(userForm: NgForm) {
-    this.showloadingImage = true;
 
     //save image
     this.authService.saveImage(this.uploadedFile)
@@ -163,19 +161,17 @@ export class RegisterComponent implements OnInit {
     this.user.KCIDetails = userForm.value.KCIDetails;
     this.user.ReferralCode = 0;
 
-
-    console.log(this.user);
+    console.log(this.user)
 
     this.authService.signUp(this.user)
     .subscribe((result:any)=>{
-      if(result !=null)
-      {
-        this.showloadingImage = false;
-        this.toastr.success('success', '');
-      }
-      else{
-        this.toastr.error('an error ocuured', '');
-      }
+      let status = result.Status;
+      if (status != "Errored") {
+        this.toastr.success(result.Data, 'Success')
+     }
+     else{
+      this.toastr.error(result.ErrorMessage, 'Error')
+     }
      
     });
 

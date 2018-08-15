@@ -22,7 +22,7 @@ export class ContactUsService {
         
         return this.http.get(this.baseUrl+'Utils/ContactUs?Subject='+subject+'&Message='+message, { headers: headers })
             .map((response: Response) => {
-                const jsonResult = response.json().Data;
+                const jsonResult = response.json();
                 return jsonResult;
             })
             .catch((error: Response) => {

@@ -1,3 +1,94 @@
-<p>
-  my-request works!
-</p>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 offset-sm-4">
+      <h3 style="color: firebrick;text-decoration: underline;">My Requests</h3>
+      <div *ngIf="showloadingImage">
+        <img src="./assets/image/loader2.gif" class="showLoadImage pull-right" alt="" height="80" width="80">
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<ng-template #elseBlock>
+  <div class="container">
+    <div class="row">
+      <div class="offset-sm-4 col-sm-4">
+        <p>No More Request</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="container" *ngIf="!dataHasOrNot; else elseBlock">
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8" id="infinite-scroller">
+      <div class="card" *ngFor="let requestData of loadedRequestList">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3 pointerCursor petImage" (click)="onDetailsClick(requestData.PetId)">
+              <img class="rounded-circle" src="{{requestData.RequestedPetImageName}}" height="100" width="100">
+            </div>
+            <div class="col-sm-6 petDetails">
+              <label class="bold" style="cursor: pointer;font-size: 15px;" (click)="onDetailsClick(requestData.PetId)">{{requestData.Message}}</label>
+              <br>
+              <label>Requester Contact Details:</label>
+              <label>{{requestData.RequestedMobile}},{{requestData.RequestedMailId}}</label>
+              <br>
+              <label>Area:</label>
+              <label>{{requestData.RequestersAreaName}}</label>
+              <br>
+              <label>City:</label>
+              <label>{{requestData.RequestersCityName}}</label>
+              <br>
+              <label>Receiver Contact Details:</label>
+              <label>{{requestData.OwnerMobile}},{{requestData.OwnerMailId}}</label>
+              <br>
+              <label>Area:</label>
+              <label>{{requestData.OwnerAreaName}}</label>
+              <br>
+              <label>City:</label>
+              <label>{{requestData.OwnerCityName}}</label>
+              <br>
+            </div>
+
+            <div class="col-sm-3 petContact">
+              <p>{{requestData.RequestedDateTime}}</p>
+              <img class="pointerCursor" data-toggle="modal" data-target="#withdrawRequestModal" (click)="onContactRequest(requestData.PetMatingRequestId)"
+                src="./assets/image/delete.png" alt="" height="40" width="40">
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <!-- The  withdraw Request Modal -->
+      <div class="modal fade" id="withdrawRequestModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">withdraw Request</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <h5>Are you sure you want to withdraw the request</h5>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onWithdrawRequest()">Send</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

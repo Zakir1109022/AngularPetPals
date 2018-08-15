@@ -72,7 +72,7 @@ export class AlliedServiceDetailsComponent implements OnInit {
            //set loader gif true
            this.showloadingImage=true;
           
-          this.sharedService.Request(data, this.securityToken,'AlliedRequest')
+          this.sharedService.Request(data, this.securityToken,'AlliedRequest',this.pet)
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;

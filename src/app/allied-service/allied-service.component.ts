@@ -34,6 +34,7 @@ export class AlliedServiceComponent implements OnInit {
   securityToken: string;
   pet: Pet;
   loginUserId: string;
+  contactPetId:number;
 
   @ViewChild('searchInput') searchValue: ElementRef;
 
@@ -69,7 +70,6 @@ export class AlliedServiceComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.sharedService.searchPetList
       .subscribe((resultList: Pet[]) => {
         this.alliedServiceList = resultList;
@@ -296,15 +296,19 @@ export class AlliedServiceComponent implements OnInit {
 
   }
 
+  onContactClick(petId:number){
+    this.contactPetId=petId;
+  }
 
-  onRequestClick(petId: number) {
+  onRequestClick() {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.sharedService.getPetByPetId(petId)
+      this.sharedService.getPetByPetId(this.contactPetId)
         .subscribe((petResult: Pet[]) => {
-          this.pet = petResult.find(p => p.PetId == petId);
+          this.pet = petResult.find(p => p.PetId == this.contactPetId);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
 
+          console.log(this.pet.PetId)
           var data = {
             "PetId": this.pet.PetId,
             "PetOwnerId": this.pet.PetOwnerId,
@@ -315,7 +319,7 @@ export class AlliedServiceComponent implements OnInit {
            //set loader gif true
            this.showloadingImage=true;
           
-          this.sharedService.Request(data, this.securityToken,'AlliedRequest')
+          this.sharedService.Request(data, this.securityToken,'AlliedRequest',this.pet)
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;

@@ -67,7 +67,7 @@ export class OwnAPetDetailsComponent implements OnInit {
           //set loader gif true
           this.showloadingImage=true;
 
-          this.sharedService.Request(data, this.securityToken,'BuyPetRequest')
+          this.sharedService.Request(data, this.securityToken,'BuyPetRequest',this.pet)
           .subscribe((result:any) => {
             var status=result.Status;
             var errorMessage=result.ErrorMessage;

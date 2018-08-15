@@ -1,17 +1,18 @@
 import { Http, Response, Headers } from '@angular/http'
 import { Injectable } from "@angular/core";
-import 'rxjs/Rx';
+import 'rxjs';
 import { Subject, Observable } from "rxjs";
 import { Pet } from "./pet.model";
 
 @Injectable()
 export class SharedService {
 
-    private baseUrl="http://staging.mypetfriends.in/api/";
+    private baseUrl = "http://staging.mypetfriends.in/api/";
 
     searchPetList = new Subject<Pet[]>();
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();
+ 
 
     constructor(private http: Http) {
 
@@ -20,8 +21,8 @@ export class SharedService {
 
     getPetByPetId(petId: number) {
         const headers = new Headers({ 'Content-Type': 'application/json' });
-        this.baseUrl='http://app.petpals.love/staging/api/';
-        return this.http.get(this.baseUrl+'Utils/GetPetDetails?petId='+petId, { headers: headers })
+        this.baseUrl = 'http://app.petpals.love/staging/api/';
+        return this.http.get(this.baseUrl + 'Utils/GetPetDetails?petId=' + petId, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -80,17 +81,61 @@ export class SharedService {
     }
 
 
-    Request(body: any, userToken: string,requestType:string) {
+    Request(body: any, userToken: string, requestType: string, requestedPet: Pet) {
+
         const headers = new Headers({ 'Content-Type': 'application/json' });
-        headers.append('SecurityToken',userToken)
-        headers.append('Authorization','Bearer '+userToken)
+        headers.append('SecurityToken', userToken)
+        headers.append('Authorization', 'Bearer ' + userToken)
 
-        this.baseUrl=' http://app.petpals.love/staging/api/'
+        this.baseUrl = ' http://app.petpals.love/staging/api/'
 
-        return this.http.post(this.baseUrl + 'Utils/'+requestType, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/' + requestType, body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
                 this.showloadingImageSubject.next(false);
+
+                return jsonResult;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+
+
+    getAllRequest(token: string) {
+
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append('SecurityToken', token)
+        headers.append('Authorization', 'Bearer ' + token)
+
+        this.baseUrl = ' http://app.petpals.love/staging/api/'
+
+        return this.http.get(this.baseUrl + 'Utils/MessageList', { headers: headers })
+            .map((response: Response) => {
+                const jsonResult = response.json().Data;
+                this.showloadingImageSubject.next(false);
+
+                return jsonResult;
+            })
+            .catch((error: Response) => {
+                return Observable.throw(error.json())
+            });
+    }
+
+
+    WidrawRequest(requestId: number, token: string) {
+
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append('SecurityToken', token)
+        headers.append('Authorization', 'Bearer ' + token)
+
+        this.baseUrl = ' http://app.petpals.love/staging/api/'
+
+        return this.http.get(this.baseUrl + 'Utils/WithdrawRequest?PetMatingRequestId=' + requestId, { headers: headers })
+            .map((response: Response) => {
+                const jsonResult = response.json();
+
                 return jsonResult;
             })
             .catch((error: Response) => {
@@ -101,12 +146,11 @@ export class SharedService {
 
 
 
-
-    showServicesByPage(pageNumber: number,_body:object) {
+    showServicesByPage(pageNumber: number, _body: object) {
         var body = _body;
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token + '&pageNumber=' + pageNumber, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token + '&pageNumber=' + pageNumber, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -167,7 +211,7 @@ export class SharedService {
 
 
 
-    
+
 
 
 }

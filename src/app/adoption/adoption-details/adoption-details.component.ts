@@ -58,7 +58,7 @@ export class AdoptionDetailsComponent implements OnInit {
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
 
           var data = {
-            "PetId": this.pet.PetId,
+            "PetId": petId,
             "PetOwnerId": this.pet.PetOwnerId,
             "RequesterOwnerId": this.loginUserId,
             "RequesterPetId": ""
@@ -68,7 +68,7 @@ export class AdoptionDetailsComponent implements OnInit {
            this.showloadingImage=true;
           
 
-          this.sharedService.Request(data, this.securityToken,'AdoptPetRequest')
+          this.sharedService.Request(data, this.securityToken,'AdoptPetRequest',this.pet)
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;

@@ -80,7 +80,7 @@ export class FindPetLoveDetailsComponent implements OnInit {
           //set loader gif true
           this.showloadingImage=true;
           
-          this.sharedService.Request(data, this.securityToken,'RequestPetMatingRequest')
+          this.sharedService.Request(data, this.securityToken,'RequestPetMatingRequest',this.pet)
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;

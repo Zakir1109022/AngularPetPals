@@ -16,6 +16,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AuthGuard } from './auth/auth-guard.service';
+import { MyRequestComponent } from './my-request/my-request.component';
 
 
 const appRoutes: Routes = [
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
   { path: 'sign-up', component: RegisterComponent},
   { path: 'sign-in', component: LoginComponent},
   { path: 'contact-us', component: ContactUsComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
+  { path: 'my-request', component: MyRequestComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
   { path: 'not-found', component: ErrorpageComponent},
   { path: '**', redirectTo: '/not-found'}
 ]

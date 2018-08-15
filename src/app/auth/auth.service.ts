@@ -50,7 +50,7 @@ export class AuthService {
 
         return this.http.post(this.baseUrl + 'MobileAccount/Register?token=' + token, body, { headers: headers })
             .map((response: Response) => {
-                const jsonResult = response.json().Data;
+                const jsonResult = response.json();
                 return jsonResult;
             })
             .catch((error: Response) => {

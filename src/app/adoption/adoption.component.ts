@@ -19,6 +19,7 @@ export class AdoptionComponent implements OnInit {
   securityToken: string;
   pet: Pet;
   loginUserId: string;
+  contactPetId: number;
 
   @ViewChild('searchInput') searchValue: ElementRef;
 
@@ -26,7 +27,7 @@ export class AdoptionComponent implements OnInit {
   scrollCallback;
 
   constructor(
-    private sharedService:SharedService,
+    private sharedService: SharedService,
     public toastr: ToastsManager,
     vcr: ViewContainerRef,
     private router: Router
@@ -39,7 +40,7 @@ export class AdoptionComponent implements OnInit {
 
   getStories() {
     var body = { "AvilableForAdotpion": 1 }
-    return this.sharedService.showServicesByPage(this.currentPage,body)
+    return this.sharedService.showServicesByPage(this.currentPage, body)
       .do(this.processData)
   }
 
@@ -61,13 +62,13 @@ export class AdoptionComponent implements OnInit {
       });
 
 
-  
+
     this.sharedService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
 
-      this.sharedService.dataHasOrNotSubject
+    this.sharedService.dataHasOrNotSubject
       .subscribe((trueorfalse: boolean) => {
         this.dataHasOrNot = trueorfalse;
       })
@@ -90,12 +91,11 @@ export class AdoptionComponent implements OnInit {
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
 
-    if(this.adoptionList.length ==0)
-    {
-      this.dataHasOrNot=true;
+    if (this.adoptionList.length == 0) {
+      this.dataHasOrNot = true;
     }
-    else{
-      this.dataHasOrNot=false;
+    else {
+      this.dataHasOrNot = false;
     }
   }
 
@@ -103,14 +103,21 @@ export class AdoptionComponent implements OnInit {
     this.router.navigate(['/adoption-details/' + petId]);
   }
 
+  onContactClick(petId: number) {
+    this.contactPetId = petId;
+  }
 
-  onRequestClick(petId: number) {
+  onRequestClick() {
     this.securityToken = localStorage.getItem('token');
+
     if (this.securityToken != null) {
-      this.sharedService.getPetByPetId(petId)
+      this.sharedService.getPetByPetId(this.contactPetId)
         .subscribe((petResult: Pet[]) => {
-          this.pet = petResult.find(p => p.PetId == petId);
+          this.pet = petResult.find(p => p.PetId == this.contactPetId);
+
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
+          //set loader gif true
+          this.showloadingImage = true;
 
           var data = {
             "PetId": this.pet.PetId,
@@ -119,11 +126,7 @@ export class AdoptionComponent implements OnInit {
             "RequesterPetId": ""
           }
 
-           //set loader gif true
-           this.showloadingImage=true;
-          
-
-          this.sharedService.Request(data, this.securityToken,'AdoptPetRequest')
+          this.sharedService.Request(data, this.securityToken, 'AdoptPetRequest', this.pet)
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;
@@ -135,8 +138,8 @@ export class AdoptionComponent implements OnInit {
               }
 
             });
-
         });
+
     }
     else {
       this.router.navigate(['/sign-in']);

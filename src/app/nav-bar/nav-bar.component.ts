@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { SharedService } from '../shared/shared.service';
 
 
 @Component({
@@ -12,10 +13,12 @@ export class NavBarComponent implements OnInit {
   securityToken: string;
   emailId: string;
 
-  constructor(private authService:AuthService) { }
+  constructor(
+    private authService:AuthService
+  ) { }
 
   ngOnInit() {
- 
+    localStorage.clear();
  //   this.securityToken= localStorage.getItem('token');
 
   this.authService.tokenValue
@@ -34,6 +37,7 @@ export class NavBarComponent implements OnInit {
     localStorage.clear();
     this.securityToken = null;
     this.emailId=null;
+
   }
 
 }

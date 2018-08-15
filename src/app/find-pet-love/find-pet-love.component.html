@@ -60,33 +60,9 @@
             </div>
             <div class="col-sm-3 petContact">
               <label>Contact</label>
-              <img class="pointerCursor" data-toggle="modal" data-target="#FindPetLoveRequestModal"  src="./assets/image/Request.png" alt="" height="40" width="40">
-
-              <!-- The Find Pet Modal -->
-              <div class="modal fade" id="FindPetLoveRequestModal">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                      <h4 class="modal-title">Find Pet Love Request</h4>
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                      <h5>Are you sure you want to send love request</h5>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onRequestClick(findPetLove.PetId)">Send</button>
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
+              <img class="pointerCursor" data-toggle="modal" data-target="#FindPetLoveRequestModal" 
+              (click)="onContactClick(findPetLove.PetId)"
+              src="./assets/image/Request.png" alt="" height="40" width="40">
 
 
             </div>
@@ -94,6 +70,33 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-2"></div>
+    <div class="col-sm-2">
+          <!-- The Find Pet Modal -->
+          <div class="modal fade" id="FindPetLoveRequestModal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Find Pet Love Request</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    <h5>Are you sure you want to send love request</h5>
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onRequestClick()">Send</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+    </div>
   </div>
 </div>

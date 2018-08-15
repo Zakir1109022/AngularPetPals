@@ -20,6 +20,7 @@ export class FindPetLoveComponent implements OnInit {
   securityToken: string;
   pet: Pet;
   loginUserId: string;
+  contactPetId:number;
 
 
   @ViewChild('searchInput') searchValue: ElementRef;
@@ -105,11 +106,14 @@ export class FindPetLoveComponent implements OnInit {
     this.router.navigate(['/find-pet-love-details/' + petId]);
   }
 
+  onContactClick(petId:number){
+    this.contactPetId=petId;
+  }
 
-  onRequestClick(petId: number) {
+  onRequestClick() {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.sharedService.getPetByPetId(petId)
+      this.sharedService.getPetByPetId(this.contactPetId)
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult[0];
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
@@ -118,8 +122,11 @@ export class FindPetLoveComponent implements OnInit {
 
           this.findPetLoveService.getFindPatLoveByPetOwnerId(this.pet.PetOwnerId)
             .subscribe((result) => {
+              //get owner PetId
               petOwner_petId = result.PetId;
-            })
+            });
+
+            console.log(this.pet.PetId);
 
           var data = {
             "PetId": this.pet.PetId,
@@ -131,7 +138,7 @@ export class FindPetLoveComponent implements OnInit {
           //set loader gif true
           this.showloadingImage=true;
           
-          this.sharedService.Request(data, this.securityToken,'RequestPetMatingRequest')
+          this.sharedService.Request(data, this.securityToken,'RequestPetMatingRequest',this.pet)
             .subscribe((result: any) => {
               var status = result.Status;
               var errorMessage = result.ErrorMessage;
