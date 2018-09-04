@@ -61,6 +61,17 @@ export class MyRequestComponent implements OnInit {
   }
 
 
+  onFindPetLoveClick(){
+    this.router.navigate(['/find-pet-love']);
+  }
+
+  onAlliedServiceClick(){
+    this.router.navigate(['/allied-service']);
+  }
+
+  onAdoptionClick(){
+    this.router.navigate(['/adoption']);
+  }
 
 
 
@@ -78,6 +89,7 @@ export class MyRequestComponent implements OnInit {
     this.sharedService.WidrawRequest(this.withdrawRequestId, this.securityToken)
       .subscribe((result: any) => {
         let status = result.Status;
+        console.log(result)
         if (status != "Errored") {
           this.toastr.success(result.Data, 'Success')
 
@@ -85,6 +97,7 @@ export class MyRequestComponent implements OnInit {
             .subscribe((result: Requests[]) => {
               this.loadedRequestList = result;
 
+              console.log(this.loadedRequestList)
               if (this.loadedRequestList.length == 0) {
                 this.dataHasOrNot = true;
               }

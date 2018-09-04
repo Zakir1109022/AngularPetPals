@@ -132,6 +132,7 @@ export class AdoptionComponent implements OnInit {
               var errorMessage = result.ErrorMessage;
               if (status != 'Errored') {
                 this.toastr.success(status, '');
+                this.router.navigate(['/my-request']);
               }
               else {
                 this.toastr.warning(errorMessage, '');

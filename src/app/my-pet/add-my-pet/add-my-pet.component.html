@@ -1,0 +1,126 @@
+<div class="container" style="margin-top: 20px;">
+  
+  <br>
+  <div *ngIf="showloadingImage" class="col-md-4 offset-md-4 ">
+    <img src="./assets/image/loader2.gif" class="showLoadImage pull-right" alt="" height="80" width="80">
+  </div>
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8">
+      <div class="card">
+        <div class="card-header" style="color: #A50F2D;">{{buttonName}} My Pet</div>
+        <div class="card-body">
+          <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+            
+            <div class="form-group">
+              <label>Upload Picture<sup style="color: red">*</sup></label>
+              <input type="file"
+              style="background-color: firebrick;color: wheat;"
+               (change)="fileChangeEvent($event)" placeholder="Upload file..." /> 
+              <!--For  Previewing image -->
+              <img id="blah" [src]="imagePath" alt="" />
+            </div>
+
+            <div class="form-group">
+                <select 
+                class="form-control"
+                 #myPetType
+                  name="myPettypes"
+                  (change)="onChange(myPetType.value)">
+                  <option
+                  value="Dating">Dating & M....
+                  </option>
+                  <option
+                  value="AvilableForAdotpion">Adoption
+                  </option>
+                  <option
+                  value="Parenting">Petparenting
+                  </option>
+                </select>
+              </div>
+
+            <div class="form-group">
+              <label>Select PetType<sup style="color: red">*</sup></label>
+              <select 
+              class="form-control"
+               [(ngModel)]="myPet.PetType" 
+                name="PetType">
+                <option
+                *ngFor="let petType of petTypeList"
+                value="{{petType}}">{{petType}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Pet Name<sup style="color: red">*</sup></label>
+              <input type="text" class="form-control" [(ngModel)]="myPet.PetName"  name="PetName">
+            </div>
+            <div class="form-group">
+              <label>Describe Your Pet<sup style="color: red">*</sup></label>
+              <input type="text" class="form-control" [(ngModel)]="myPet.KCIDetails"  name="Description">
+            </div>
+            <div class="form-group">
+              <label>Select Breed<sup style="color: red">*</sup></label>
+              <select 
+              class="form-control"
+               [(ngModel)]="myPet.BreedName" 
+                name="BreedName">
+                <option
+                *ngFor="let breed of breedList"
+                value="{{breed.BreedName}}">{{breed.BreedName}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Gender<sup style="color: red">*</sup></label>
+              <select name="Gender"  [(ngModel)]="myPet.PetGender" class="form-control">
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>           
+            <div class="form-group" >
+              <label>Select City<sup style="color: red">*</sup></label>
+              <select name="City" [(ngModel)]="myPet.CityName" class="form-control"
+              (change)="onCityChange(myPet.CityName)">
+              <option *ngFor="let city of cityList"
+              [ngValue]="city.CityName" >{{city.CityName}}</option>
+              </select>
+            </div>
+            <div class="form-group" >
+              <label>Select Area<sup style="color: red">*</sup></label>
+              <select name="Area" [(ngModel)]="myPet.AreaName" class="form-control"
+              (change)="onAreaChange(myPet.AreaName)">
+              <option *ngFor="let area of areaList"
+              [ngValue]="area.AreaName" >{{area.AreaName}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date od birth<sup style="color: red">*</sup></label>
+              <input type="date" class="form-control"  [(ngModel)]="myPet.PetDob" name="Dob">
+            </div>
+            <div class="form-group">
+              <label>Pet Color<sup style="color: red">*</sup></label>
+              <input type="text" class="form-control" [(ngModel)]="myPet.Colors"  name="PetColor">
+            </div>
+            <div class="form-group">
+              <label>Heating cycle form</label>
+              <input type="date" class="form-control"  [(ngModel)]="myPet.HeatingCycleFrom" name="HeatingCycleFrom">
+            </div>
+            <div class="form-group">
+              <label>Heating cycle to</label>
+              <input type="date" class="form-control"  [(ngModel)]="myPet.HeatingCycleTo" name="HeatingCycleTo">
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox"
+                  [(ngModel)]="myPet.KCIRegistered" name="KCIRegistered"> KCI Verified
+                </label>
+              </div>
+            <button type="submit" class="btn" style="background-color: #A50F2D;color: white;">{{buttonName}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
+

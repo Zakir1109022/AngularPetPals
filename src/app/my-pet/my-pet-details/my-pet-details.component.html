@@ -1,0 +1,74 @@
+<div class="container" style="margin-top: 30px;background-color: white">
+  <!-- <div class="row">
+    <div class="col-sm-12">
+      <br>
+      <div class="alert alert-success">
+        <strong>
+          <a routerLink="/own-a-pet">own-a-pet</a>/own-a-pet-details</strong>
+      </div>
+    </div>
+  </div> -->
+  
+  <br>
+  <div *ngIf="showloadingImage" class="col-md-4 offset-md-4 ">
+    <img src="./assets/image/loader2.gif" class="showLoadImage pull-right" alt="" height="80" width="80">
+  </div>
+
+  <div class="row">
+    <div class="offset-sm-3 col-sm-6">
+      <img src="{{pet.PictrueName}}" alt="Pet image" height="300" width="100%">
+      <h4 style="background-color: honeydew;padding-bottom:7px;">{{pet.PetName}}</h4>
+      <img class="pointerCursor" 
+        (click)="onEditClick(pet.PetId)"
+        style="    margin-left: 300px;margin-top: -79px;"
+           src="./assets/image/edit.jpg" alt="" height="30" width="30">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td style="color: #A50F2D;">Pet Type</td>
+            <td> </td>
+            <td>{{pet.PetType}}</td>
+          </tr>
+          <tr>
+            <td style="color: #A50F2D;">Description</td>
+            <td> </td>
+            <td>{{pet.KCIDetails}}</td>
+          </tr>
+          <tr>
+            <td style="color: #A50F2D;">Breed</td>
+            <td> </td>
+            <td>{{pet.BreedName}}</td>
+          </tr>
+          <tr>
+            <td style="color: #A50F2D;">Date of birth</td>
+            <td> </td>
+            <td>{{pet.PetDob}}</td>
+          </tr>
+          <tr>
+            <td style="color: #A50F2D;">Gender</td>
+            <td> </td>
+            <td>{{pet.PetGender}}</td>
+          </tr>
+          <tr>
+              <td style="color: #A50F2D;">Color</td>
+              <td> </td>
+              <td>{{pet.Colors}}</td>
+            </tr>
+            <tr>
+                <td style="color: #A50F2D;">City</td>
+                <td> </td>
+                <td>{{pet.CityName}}</td>
+              </tr>
+              <tr>
+                  <td style="color: #A50F2D;">Area Name</td>
+                  <td> </td>
+                  <td>{{pet.AreaName}}</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-3">
+    </div>
+  </div>
+<br><br>
+</div>

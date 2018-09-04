@@ -1,6 +1,28 @@
 <br>
 <div class="container">
   <div class="row">
+      <div class="col-sm-2">
+
+      </div>
+    <div class="col-sm-2" style="cursor: pointer;"  (click)="onFindPetLoveClick()" >
+      <img  src="./assets/image/service2.jpg" 
+      class="pull-right" alt="" height="100" width="100">
+    </div>
+    <div class="col-sm-2" style="cursor: pointer;" (click)="onAlliedServiceClick()">
+      <img src="./assets/image/Adoption.png" 
+      class="pull-right" alt="" height="100" width="100"
+       >
+    </div>
+    <div class="col-sm-2" style="cursor: pointer;" (click)="onAdoptionClick()">
+      <img src="./assets/image/AdoptionResults.png"
+      class="pull-right" alt="" height="100" width="100">
+    </div>
+    <div class="col-sm-4">
+
+      </div>
+  </div>
+<br>
+  <div class="row">
     <div class="col-sm-4 offset-sm-4">
       <h3 style="color: firebrick;text-decoration: underline;">My Requests</h3>
       <div *ngIf="showloadingImage">
@@ -54,9 +76,19 @@
 
             <div class="col-sm-3 petContact">
               <p>{{requestData.RequestedDateTime}}</p>
-              <img class="pointerCursor" data-toggle="modal" data-target="#withdrawRequestModal" (click)="onContactRequest(requestData.PetMatingRequestId)"
-                src="./assets/image/delete.png" alt="" height="40" width="40">
 
+              <img *ngIf="requestData.MsgStatus=='Approved'" src="./assets/image/success.png" alt="" height="40" width="40">
+
+              <img *ngIf="requestData.MsgStatus=='Under Screening'" src="./assets/image/send.png" alt="" height="40"
+                width="40">
+
+              <img *ngIf="requestData.MsgStatus!='Approved' && requestData.MsgStatus!='Under Screening'" src="./assets/image/send.png"
+                alt="" height="40" width="40">
+
+              <br>
+              <img *ngIf="requestData.MsgStatus!='Approved'" class="pointerCursor" data-toggle="modal" data-target="#withdrawRequestModal"
+                (click)="onContactRequest(requestData.PetMatingRequestId)" src="./assets/image/delete.png" alt=""
+                height="40" width="40">
 
             </div>
           </div>

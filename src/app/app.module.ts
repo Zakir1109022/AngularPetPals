@@ -38,6 +38,10 @@ import { AuthGuard } from './auth/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ToastModule} from 'ng2-toastr';
 import { MyRequestComponent } from './my-request/my-request.component';
+import { MyPetComponent } from './my-pet/my-pet.component';
+import { AddMyPetComponent } from './my-pet/add-my-pet/add-my-pet.component';
+import { MyPetService } from './my-pet/MyPet.service';
+import { MyPetDetailsComponent } from './my-pet/my-pet-details/my-pet-details.component';
 
 
 @NgModule({
@@ -61,7 +65,10 @@ import { MyRequestComponent } from './my-request/my-request.component';
     LoginComponent,
     InfiniteScrollerDirective,
     ContactUsComponent,
-    MyRequestComponent
+    MyRequestComponent,
+    MyPetComponent,
+    AddMyPetComponent,
+    MyPetDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +88,7 @@ import { MyRequestComponent } from './my-request/my-request.component';
     AuthService,
     SharedService,
     ContactUsService,
+    MyPetService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

@@ -135,14 +135,13 @@ export class SharedService {
         return this.http.get(this.baseUrl + 'Utils/WithdrawRequest?PetMatingRequestId=' + requestId, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
-
                 return jsonResult;
             })
             .catch((error: Response) => {
+                window.alert(error.json().Message);
                 return Observable.throw(error.json())
             });
     }
-
 
 
 

@@ -1,6 +1,5 @@
 import {RouterModule, Routes, PreloadAllModules} from '@angular/router';
 import {HomeComponent} from './home/home.component';
-import {SearchComponent} from './search/search.component';
 import {NgModule} from '@angular/core';
 import {OwnAPetComponent} from './own-a-pet/own-a-pet.component';
 import {FindPetLoveComponent} from './find-pet-love/find-pet-love.component';
@@ -17,6 +16,9 @@ import { RegisterComponent } from './auth/register/register.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AuthGuard } from './auth/auth-guard.service';
 import { MyRequestComponent } from './my-request/my-request.component';
+import { MyPetComponent } from './my-pet/my-pet.component';
+import { AddMyPetComponent } from './my-pet/add-my-pet/add-my-pet.component';
+import { MyPetDetailsComponent } from './my-pet/my-pet-details/my-pet-details.component';
 
 
 const appRoutes: Routes = [
@@ -35,6 +37,10 @@ const appRoutes: Routes = [
   { path: 'sign-in', component: LoginComponent},
   { path: 'contact-us', component: ContactUsComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
   { path: 'my-request', component: MyRequestComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
+  { path: 'my-pet', component: MyPetComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
+  { path: 'my-pet/:id', component: AddMyPetComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
+  { path: 'my-pet-details/:id', component: MyPetDetailsComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
+  { path: 'add-Mypet', component: AddMyPetComponent,canLoad: [AuthGuard],canActivate: [AuthGuard]},
   { path: 'not-found', component: ErrorpageComponent},
   { path: '**', redirectTo: '/not-found'}
 ]

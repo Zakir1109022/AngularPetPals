@@ -54,18 +54,55 @@ export class AuthService {
                 return jsonResult;
             })
             .catch((error: Response) => {
+                window.alert("Internal Server Error!")
                 return Observable.throw(error.json())
             });
     }
 
 
 
-    saveUser(body: any, userToken: string) {
+    saveUser(user: any, userToken: string) {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         headers.append('SecurityToken',userToken)
         headers.append('Authorization','Bearer '+userToken)
+        
+        var body={
+        "UserName":user.UserName,
+        "Password" :'',
+        "Locale" :'',
+       "FirstName":user.FirstName,
+       "AreaId":0,
+       "Dob":user.Dob,
+       "UserId":user.UserId,
+       "LastName":user.LastName,
+       "MobilePhone":user.MobilePhone,
+       "EmailId":user.EmailId,
+       "Address1":user.Address1,
+       "Address2":user.Address2,
+       "LoggedInIpAddress":'',
+       "Gender":user.Gender,
+       "EmailNotification":false,
+       "SmsNotification":false,
+       "Salutation":user.Salutation,
+       "PinCode":user.PinCode,
+       "BloodGroup":user.BloodGroup,
+       "NearestLandMark":'',
+       "DeviceId":user.DeviceId,
+       "UserProfilePicture":user.UserProfilePicture,
+       "DeviceType":user.DeviceType,
+       "Latitude":user.Latitude,
+       "Longitude":user.Longitude,
+       "UserType":user.UserType,
+       "CountryName":'Demo',
+       "CityName" : 'Demo',
+       "AreaName" :'Demo',
+       "KCIRegistered" :false,
+       "KCIDetails":''
+       }
 
+       console.log(body);
 
+       
         return this.http.post(this.baseUrl + 'MobileAccount/SaveMyProfile', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json().Data;
@@ -110,27 +147,34 @@ export class AuthService {
 
 
     saveImage(file: File) {
-        let formData: FormData = new FormData();  
-        formData.append('Content-Disposition', file);
-        formData.append('name', 'DemoFieldName');
-        formData.append('filename', file.name);
-        formData.append('Content-Type', file.type);
-
-        let headers = new Headers() 
-
-        //headers = new Headers({ 'Content-Type': 'multipart/form-data; boundary=-------------------------acebdf13572468' });
-        let options = new RequestOptions({ headers: headers });
-
-        this.baseUrl='http://app.petpals.love/staging/api/';
-
-        return this.http.post(this.baseUrl + 'Utils/UploadFile', formData, options)
-            .map((response: Response) => {
-                const jsonResult = response.json().Data;
-                return jsonResult;
-            })
-            .catch((error: Response) => {
-                return Observable.throw(error.json())
-            });
+        if (file != undefined) {
+            let formData: FormData = new FormData();  
+            formData.append('Content-Disposition', file);
+            formData.append('name', 'DemoFieldName');
+            formData.append('filename', file.name);
+            formData.append('Content-Type', file.type);
+    
+            let headers = new Headers() 
+    
+            //headers = new Headers({ 'Content-Type': 'multipart/form-data; boundary=-------------------------acebdf13572468' });
+            let options = new RequestOptions({ headers: headers });
+    
+            this.baseUrl='http://app.petpals.love/staging/api/';
+    
+            return this.http.post(this.baseUrl + 'Utils/UploadFile', formData, options)
+                .map((response: Response) => {
+                    const jsonResult = response.json().Data;
+                    return jsonResult;
+                })
+                .catch((error: Response) => {
+                    window.alert("Please add profile picture")
+                    return Observable.throw(error.json())
+                });
+        }
+        else{
+            window.alert("Please add profile picture")
+        }
+        
     }
 
 

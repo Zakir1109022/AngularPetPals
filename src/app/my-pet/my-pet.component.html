@@ -1,0 +1,83 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 offset-sm-4">
+      <h3 style="color: firebrick;text-decoration: underline;">My Pets</h3>
+      <div *ngIf="showloadingImage">
+        <img src="./assets/image/loader2.gif" class="showLoadImage pull-right" alt="" height="80" width="80">
+      </div>
+    </div>
+    <div class="col-sm-4">
+    </div>
+  </div>
+  <div class="row">
+      <div class="offset-sm-2 col-sm-4">
+        <button class="btn btn-primary" routerLink="/add-Mypet">Add MyPet</button>
+      </div>
+  </div>
+</div>
+<br>
+
+<div class="container">
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8" id="infinite-scroller">
+      <div class="card" *ngFor="let myPet of loadedMyPetList">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3 pointerCursor petImage">
+              <img class="rounded-circle" src="{{myPet.PictrueName}}" height="100" width="100">
+            </div>
+            <div class="col-sm-6 petDetails">
+              <label class="bold" style="cursor: pointer;font-size: 15px;" >{{myPet.PetName}}</label>
+              <br>
+              <label>PetGender:</label>
+              <label>{{myPet.PetGender}}</label>
+              <br>
+              <label>PetType:</label>
+              <label>{{myPet.PetType}}</label>
+              <br>
+              <label>BreedName:</label>
+              <label>{{myPet.BreedName}}</label>
+            </div>
+
+            <div class="col-sm-3 petContact">
+              <img *ngIf="myPet.PetId !=1" class="pointerCursor" data-toggle="modal" data-target="#DeletePetModal" (click)="onDeleteClick(myPet.PetId)"
+                src="./assets/image/delete.png" alt="" height="40" width="40">
+                <br>
+                <br>
+                <img *ngIf="myPet.PetId !=1" class="pointerCursor"  (click)="onDetailsClick(myPet.PetId)"
+                src="./assets/image/edit.jpg" alt="" height="40" width="40">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <!-- The  Delete Pet Modal -->
+      <div class="modal fade" id="DeletePetModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Delete Pet</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <h5>Are you sure you want to delete this pet?</h5>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal" (click)="onDeletePet()">Send</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

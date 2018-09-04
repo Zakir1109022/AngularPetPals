@@ -43,10 +43,12 @@ export class LoginComponent implements OnInit {
       .subscribe((result: any) => {
 
           if (result != null) {
-            this.authService.saveUser(result, result.SecurityToken)
-              .subscribe((result) => {
-                console.log(result)
-              });
+            console.log(result)
+
+            // this.authService.saveUser(result, result.SecurityToken)
+            //   .subscribe((result) => {
+            //     console.log(result)
+            //   });
 
             localStorage.setItem('token', result.SecurityToken);
             localStorage.setItem('emailId', result.EmailId);

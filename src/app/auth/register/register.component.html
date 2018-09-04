@@ -7,16 +7,16 @@
           <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
             
             <div class="form-group">
-              <label>Upload Picture</label>
+              <label>Upload Picture<sup style="color: red">*</sup></label>
               <input type="file"
               style="background-color: firebrick;color: wheat;"
                (change)="fileChangeEvent($event)" placeholder="Upload file..." /> 
-
+              <!--For  Previewing image -->
               <img id="blah" [src]="imagePath" alt="" />
             </div>
 
             <div class="form-group">
-              <label>You are an?</label>
+              <label>You are an?<sup style="color: red">*</sup></label>
               <select 
               class="form-control"
                [(ngModel)]="user.UserType" 
@@ -28,46 +28,46 @@
               </select>
             </div>
             <div class="form-group">
-              <label>First Name</label>
+              <label>First Name<sup style="color: red">*</sup></label>
               <input type="text" class="form-control" [(ngModel)]="user.FirstName"  name="FirstName">
             </div>
             <div class="form-group">
-              <label>Last Name</label>
+              <label>Last Name<sup style="color: red">*</sup></label>
               <input type="text" class="form-control" [(ngModel)]="user.LastName"  name="LastName">
             </div>
             <div class="form-group">
-              <label>Email</label>
+              <label>Email<sup style="color: red">*</sup></label>
               <input type="text" class="form-control" [(ngModel)]="user.EmailId"  name="EmailId">
             </div>
             <div class="form-group">
-              <label>Description</label>
+              <label>Description<sup style="color: red">*</sup></label>
               <input type="text" class="form-control"  [(ngModel)]="user.KCIDetails" name="KCIDetails">
             </div>
             <div class="form-group">
-              <label>Password</label>
+              <label>Password<sup style="color: red">*</sup></label>
               <input type="password" class="form-control" [(ngModel)]="user.Password"  name="Password">
             </div>
             <div class="form-group">
-              <label>Confirm Password</label>
+              <label>Confirm Password<sup style="color: red">*</sup></label>
               <input type="password" class="form-control" [(ngModel)]="user.Password" name="ConfirmPassword">
             </div>
             <div class="form-group">
-              <label>Contact Number</label>
+              <label>Contact Number<sup style="color: red">*</sup></label>
               <input type="text" class="form-control"  [(ngModel)]="user.MobilePhone" name="MobilePhone">
             </div>
             <div class="form-group">
-              <label>Date od birth</label>
+              <label>Date od birth<sup style="color: red">*</sup></label>
               <input type="date" class="form-control"  [(ngModel)]="user.Dob" name="Dob">
             </div>
             <div class="form-group">
-              <label>Gender</label>
+              <label>Gender<sup style="color: red">*</sup></label>
               <select name="Gender"  [(ngModel)]="user.Gender" class="form-control">
                 <option>Male</option>
                 <option>Female</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Select Country</label>
+              <label>Select Country<sup style="color: red">*</sup></label>
               <select name="Country"   [(ngModel)]="user.CountryName" class="form-control"
               (change)="onCountryChange(user.CountryName)">
               <option *ngFor="let country of countryList"
@@ -75,7 +75,7 @@
               </select>
             </div>
             <div class="form-group" >
-              <label>Select City</label>
+              <label>Select City<sup style="color: red">*</sup></label>
               <select name="City" [(ngModel)]="user.CityName" class="form-control"
               (change)="onCityChange(user.CityName)">
               <option *ngFor="let city of cityList"
@@ -83,7 +83,7 @@
               </select>
             </div>
             <div class="form-group" >
-              <label>Select Area</label>
+              <label>Select Area<sup style="color: red">*</sup></label>
               <select name="Area" [(ngModel)]="user.AreaName" class="form-control"
               (change)="onAreaChange(user.AreaName)">
               <option *ngFor="let area of areaList"

@@ -135,6 +135,7 @@ export class OwnAPetComponent implements OnInit {
             if(status !='Errored')
             {
               this.toastr.success(status, '');
+              this.router.navigate(['/my-request']);
             }
             else{
               this.toastr.warning(errorMessage, '');

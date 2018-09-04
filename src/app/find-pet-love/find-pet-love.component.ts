@@ -20,7 +20,7 @@ export class FindPetLoveComponent implements OnInit {
   securityToken: string;
   pet: Pet;
   loginUserId: string;
-  contactPetId:number;
+  PetId:number;
 
 
   @ViewChild('searchInput') searchValue: ElementRef;
@@ -107,13 +107,13 @@ export class FindPetLoveComponent implements OnInit {
   }
 
   onContactClick(petId:number){
-    this.contactPetId=petId;
+    this.PetId=petId;
   }
 
   onRequestClick() {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.sharedService.getPetByPetId(this.contactPetId)
+      this.sharedService.getPetByPetId(this.PetId)
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult[0];
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
@@ -144,6 +144,7 @@ export class FindPetLoveComponent implements OnInit {
               var errorMessage = result.ErrorMessage;
               if (status != 'Errored') {
                 this.toastr.success(status, '');
+                this.router.navigate(['/my-request']);
               }
               else {
                 this.toastr.warning(errorMessage, '');

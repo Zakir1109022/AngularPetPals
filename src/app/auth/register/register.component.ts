@@ -118,6 +118,7 @@ export class RegisterComponent implements OnInit {
 
     var reader = new FileReader();
     reader.onload = (event: ProgressEvent) => {
+      //no problem for this error
       this.imagePath = (<FileReader>event.target).result;
     }
 
@@ -136,44 +137,54 @@ export class RegisterComponent implements OnInit {
       });
 
 
-    const UserName = userForm.value.FirstName + ' ' + userForm.value.LastName;
-
-    this.user.UserName = UserName;
-    this.user.Password = userForm.value.Password
-    this.user.FirstName = userForm.value.FirstName
-    this.user.AreaId = userForm.value.Area.Areaid;
-    this.user.Dob = userForm.value.Dob;
-    this.user.UserId = 6;
-    this.user.LastName = userForm.value.LastName;
-    this.user.MobilePhone = userForm.value.MobilePhone;
-    this.user.EmailId = userForm.value.EmailId;
-    this.user.Gender = userForm.value.Gender;
-    this.user.EmailNotification = true;
-    this.user.SmsNotification = true;
-    this.user.DeviceType = "Web";
-    this.user.UserType = userForm.value.UserType;
-    this.user.CountryId = userForm.value.Country.CountryId;
-    this.user.CountryName = userForm.value.Country.CountryName;
-    this.user.CityId = userForm.value.City.CityId;
-    this.user.CityName = userForm.value.City.CityName;
-    this.user.AreaName = userForm.value.Area.AreaName;
-    this.user.KCIRegistered = 1;
-    this.user.KCIDetails = userForm.value.KCIDetails;
-    this.user.ReferralCode = 0;
-
-    console.log(this.user)
-
-    this.authService.signUp(this.user)
-    .subscribe((result:any)=>{
-      let status = result.Status;
-      if (status != "Errored") {
-        this.toastr.success(result.Data, 'Success')
-     }
-     else{
-      this.toastr.error(result.ErrorMessage, 'Error')
-     }
-     
-    });
+      if(userForm.value.FirstName !="" && userForm.value.LastName !="" && userForm.value.Password && 
+       userForm.value.Dob !="" && userForm.value.MobilePhone !="" && userForm.value.EmailId !="" &&
+       userForm.value.Gender !="" && userForm.value.UserType !="" && userForm.value.Country.CountryName !=undefined 
+      && userForm.value.City.CityName !=undefined && userForm.value.Area.AreaName !=undefined 
+      && userForm.value.KCIDetails !=""){
+        ///set form value to user model
+        const UserName = userForm.value.FirstName + ' ' + userForm.value.LastName;
+        this.user.UserName = UserName;
+        this.user.Password = userForm.value.Password
+        this.user.FirstName = userForm.value.FirstName
+        this.user.AreaId = userForm.value.Area.Areaid;
+        this.user.Dob = userForm.value.Dob;
+        this.user.UserId = 6;
+        this.user.LastName = userForm.value.LastName;
+        this.user.MobilePhone = userForm.value.MobilePhone;
+        this.user.EmailId = userForm.value.EmailId;
+        this.user.Gender = userForm.value.Gender;
+        this.user.EmailNotification = true;
+        this.user.SmsNotification = true;
+        this.user.DeviceType = "Web";
+        this.user.UserType = userForm.value.UserType;
+        this.user.CountryId = userForm.value.Country.CountryId;
+        this.user.CountryName = userForm.value.Country.CountryName;
+        this.user.CityId = userForm.value.City.CityId;
+        this.user.CityName = userForm.value.City.CityName;
+        this.user.AreaName = userForm.value.Area.AreaName;
+        this.user.KCIRegistered = 1;
+        this.user.KCIDetails = userForm.value.KCIDetails;
+        this.user.ReferralCode = 0;
+    
+        console.log(this.user)
+    
+        this.authService.signUp(this.user)
+        .subscribe((result:any)=>{
+          let status = result.Status;
+          if (status != "Errored") {
+            this.toastr.success(result.Data, 'Success')
+         }
+         else{
+          this.toastr.error(result.ErrorMessage, 'Error')
+         }
+         
+        });
+      }
+      else{
+        this.toastr.error('Please add required data', 'Error')
+      }
+   
 
 
   }
