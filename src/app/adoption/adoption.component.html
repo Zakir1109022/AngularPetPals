@@ -66,8 +66,8 @@
                       data-target="#AdoptionRequestModal" 
                       (click)="onContactClick(adoption.PetId)"
                        src="./assets/image/Adoption.png" alt="" height="40" width="40">
-
-                  
+                       <img *ngIf="adoption.KCIRegistered ==true" 
+                       src="./assets/image/KCICertified.png" alt="" height="40" width="40">
                     </div>
                 </div>
           </div>

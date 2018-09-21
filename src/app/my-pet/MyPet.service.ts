@@ -5,18 +5,23 @@ import { Observable, Subject } from 'rxjs'
 import { City } from "../search/city.model";
 import { Area } from "../search/area.model";
 import { MyPet } from "./MyPet.model";
+import { ConfigService } from "../shared/api_settings/config.service";
 
 @Injectable()
 export class MyPetService {
 
-    private baseUrl = "http://staging.mypetfriends.in/api/";
-    private baseUrl2 = "http://app.petpals.love/staging/api/"
 
+    private baseUrl;
 
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();
 
-    constructor(private http: Http) { }
+    constructor(
+        private http: Http,
+        private apiConfig:ConfigService
+        ) {
+            this.baseUrl=apiConfig.getApiURI();
+         }
 
 
     getPetTypeList() {
@@ -76,7 +81,6 @@ export class MyPetService {
 
 
     saveMypet(myPet: MyPet, token: string,petImage:string) {
-        console.log(petImage)
         var body = {
             "PetName": myPet.PetName,
             "BreedName": myPet.BreedName,
@@ -108,26 +112,23 @@ export class MyPetService {
 
         }
 
-        console.log(body)
         const headers = new Headers({ 'Content-Type': 'application/json' });
         headers.append('SecurityToken', token)
         headers.append('Authorization', 'Bearer ' + token)
 
 
-        return this.http.post(this.baseUrl2 + 'Utils/AddPet', body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/AddPet', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
                 return jsonResult;
             })
             .catch((error: Response) => {
-                window.alert('Internal server error! please try again.')
                 return Observable.throw(error.json())
             });
     }
 
 
     updateMypet(myPet: MyPet, token: string,petImage:string) {
-        console.log(petImage)
         var body = {
             "PetId": myPet.PetId,
             "PetName": myPet.PetName,
@@ -160,19 +161,17 @@ export class MyPetService {
 
         }
 
-        console.log(body)
         const headers = new Headers({ 'Content-Type': 'application/json' });
         headers.append('SecurityToken', token)
         headers.append('Authorization', 'Bearer ' + token)
 
 
-        return this.http.post(this.baseUrl2 + 'Utils/UpdatePet', body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/UpdatePet', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
                 return jsonResult;
             })
             .catch((error: Response) => {
-                window.alert('Internal server error! please try again.')
                 return Observable.throw(error.json())
             });
     }
@@ -184,7 +183,7 @@ export class MyPetService {
         headers.append('Authorization', 'Bearer ' + token)
 
 
-        return this.http.get('http://app.petpals.love/staging/api/Utils/GetPetDetails?petId='+petId,{ headers: headers })
+        return this.http.get(this.baseUrl + 'Utils/GetPetDetails?petId='+petId,{ headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
                 this.showloadingImageSubject.next(false)
@@ -207,14 +206,14 @@ export class MyPetService {
 
         var body = {};
 
-        return this.http.post('http://app.petpals.love/staging/api/Utils/mypets', body, { headers: headers })
+        return this.http.post(this.baseUrl + '/Utils/mypets', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
                 this.showloadingImageSubject.next(false)
                 return jsonResult;
             })
             .catch((error: Response) => {
-                window.alert(error.json().ErrorMessage)
+                //window.alert(error.json().ErrorMessage)
                 return Observable.throw(error.json())
             });
     }
@@ -228,7 +227,7 @@ export class MyPetService {
 
         var body = { "PetId": petId }
 
-        return this.http.post('http://app.petpals.love/staging/api/Utils/DeletePet', body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/DeletePet', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
                 this.showloadingImageSubject.next(false)
@@ -240,6 +239,25 @@ export class MyPetService {
             });
     }
 
+
+    makePetFavourite(token: string, petId: number) {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        headers.append('SecurityToken', token)
+        headers.append('Authorization', 'Bearer ' + token)
+
+        var body = { "PetId": petId }
+
+        return this.http.post(this.baseUrl+'Utils/MakePetFavorite', body, { headers: headers })
+            .map((response: Response) => {
+                const jsonResult = response.json();
+                this.showloadingImageSubject.next(false)
+                return jsonResult;
+            })
+            .catch((error: Response) => {
+                window.alert(error.json().Message)
+                return Observable.throw(error.json())
+            });
+    }
 
 
 
@@ -258,7 +276,7 @@ export class MyPetService {
             let options = new RequestOptions({ headers: headers });
 
 
-            return this.http.post(this.baseUrl2 + 'Utils/UploadFile', formData, options)
+            return this.http.post(this.baseUrl + 'Utils/UploadFile', formData, options)
                 .map((response: Response) => {
                     const jsonResult = response.json().Data;
                     return jsonResult;

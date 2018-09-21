@@ -3,25 +3,29 @@ import { Injectable } from "@angular/core";
 import 'rxjs';
 import { Subject, Observable } from "rxjs";
 import { Pet } from "./pet.model";
+import { ConfigService } from './api_settings/config.service';
 
 @Injectable()
 export class SharedService {
 
-    private baseUrl = "http://staging.mypetfriends.in/api/";
+    private baseUrl;
 
     searchPetList = new Subject<Pet[]>();
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();
- 
 
-    constructor(private http: Http) {
 
+    constructor
+        (
+        private http: Http,
+        private apiConfig: ConfigService
+        ) {
+        this.baseUrl = apiConfig.getApiURI();
     }
 
 
     getPetByPetId(petId: number) {
         const headers = new Headers({ 'Content-Type': 'application/json' });
-        this.baseUrl = 'http://app.petpals.love/staging/api/';
         return this.http.get(this.baseUrl + 'Utils/GetPetDetails?petId=' + petId, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
@@ -87,8 +91,6 @@ export class SharedService {
         headers.append('SecurityToken', userToken)
         headers.append('Authorization', 'Bearer ' + userToken)
 
-        this.baseUrl = ' http://app.petpals.love/staging/api/'
-
         return this.http.post(this.baseUrl + 'Utils/' + requestType, body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json();
@@ -109,8 +111,6 @@ export class SharedService {
         headers.append('SecurityToken', token)
         headers.append('Authorization', 'Bearer ' + token)
 
-        this.baseUrl = ' http://app.petpals.love/staging/api/'
-
         return this.http.get(this.baseUrl + 'Utils/MessageList', { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json().Data;
@@ -129,8 +129,6 @@ export class SharedService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         headers.append('SecurityToken', token)
         headers.append('Authorization', 'Bearer ' + token)
-
-        this.baseUrl = ' http://app.petpals.love/staging/api/'
 
         return this.http.get(this.baseUrl + 'Utils/WithdrawRequest?PetMatingRequestId=' + requestId, { headers: headers })
             .map((response: Response) => {

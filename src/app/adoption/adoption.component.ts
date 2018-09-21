@@ -115,7 +115,9 @@ export class AdoptionComponent implements OnInit {
         .subscribe((petResult: Pet[]) => {
           this.pet = petResult.find(p => p.PetId == this.contactPetId);
 
+          console.log(this.pet);
           this.loginUserId = localStorage.getItem('RequesterOwnerId');
+          
           //set loader gif true
           this.showloadingImage = true;
 

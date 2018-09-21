@@ -36,6 +36,10 @@ export class SearchComponent implements OnInit {
   showloadingImage: boolean = true;
 
 
+public selectedCountry:Country;
+ public selectedCity:City;
+ public selectedArea:Area;
+
   constructor(
     private searchService: SearchService,
     private sharedService: SharedService,

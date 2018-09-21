@@ -6,17 +6,23 @@ import { Country } from "./country.model";
 import { City } from "./city.model";
 import { Area } from "./area.model";
 import { Pet } from "../shared/pet.model";
+import { ConfigService } from "../shared/api_settings/config.service";
 
 @Injectable()
 export class SearchService {
 
-    private baseUrl="http://staging.mypetfriends.in/api/";
+    private baseUrl;
 
 
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();
 
-    constructor(private http: Http) { }
+    constructor(
+        private http: Http,
+        private apiConfig: ConfigService
+        ) {
+        this.baseUrl = apiConfig.getApiURI();
+     }
 
 
     getPetList() {

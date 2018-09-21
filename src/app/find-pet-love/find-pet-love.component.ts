@@ -4,6 +4,8 @@ import { FindPetLoveService } from './find-pet-love.service';
 import { Pet } from '../shared/pet.model';
 import { ToastsManager } from 'ng2-toastr';
 import { SharedService } from '../shared/shared.service';
+import { MyPet } from '../my-pet/MyPet.model';
+import { MyPetService } from '../my-pet/MyPet.service';
 
 @Component({
   selector: 'app-find-pet-love',
@@ -13,6 +15,7 @@ import { SharedService } from '../shared/shared.service';
 export class FindPetLoveComponent implements OnInit {
 
   findPetLoveList: Pet[] = [];
+  myPetList: MyPet[] = []
   loadedPetList: Pet[] = [];
   showloadingImage: boolean = true;
   dataHasOrNot: boolean = false;
@@ -20,17 +23,21 @@ export class FindPetLoveComponent implements OnInit {
   securityToken: string;
   pet: Pet;
   loginUserId: string;
-  PetId:number;
+  PetId: number;
+  public myPetIdValue: number = 0;
+
 
 
   @ViewChild('searchInput') searchValue: ElementRef;
+  @ViewChild('myPetId') myPetId: ElementRef;
 
   currentPage: number = 1;
   scrollCallback;
 
   constructor(
     private findPetLoveService: FindPetLoveService,
-    private sharedService:SharedService,
+    private sharedService: SharedService,
+    private myPetService: MyPetService,
     public toastr: ToastsManager,
     vcr: ViewContainerRef,
     private router: Router
@@ -42,7 +49,7 @@ export class FindPetLoveComponent implements OnInit {
 
   getStories() {
     var body = { "WillingToSell": 0 };
-    return this.sharedService.showServicesByPage(this.currentPage,body)
+    return this.sharedService.showServicesByPage(this.currentPage, body)
       .do(this.processData)
   }
 
@@ -55,6 +62,25 @@ export class FindPetLoveComponent implements OnInit {
 
 
   ngOnInit() {
+    this.securityToken = localStorage.getItem("token")
+    console.log(this.securityToken);
+
+    this.myPetService.mypetList(this.securityToken)
+      .subscribe((result: any) => {
+        let status = result.Status;
+        if (status != "Errored") {
+          this.myPetList = result.Data;
+          console.log(this.myPetList);
+        }
+        else {
+          this.toastr.error(result.ErrorMessage, 'Error')
+        }
+
+      })
+
+
+
+
     this.sharedService.searchPetList
       .subscribe((ownPetList: Pet[]) => {
         this.findPetLoveList = ownPetList;
@@ -69,7 +95,7 @@ export class FindPetLoveComponent implements OnInit {
       })
 
 
-      this.sharedService.dataHasOrNotSubject
+    this.sharedService.dataHasOrNotSubject
       .subscribe((trueorfalse: boolean) => {
         this.dataHasOrNot = trueorfalse;
       })
@@ -92,67 +118,65 @@ export class FindPetLoveComponent implements OnInit {
         item.PetName.toLowerCase().indexOf(value.toLowerCase()) > -1
     )
 
-    if(this.findPetLoveList.length ==0)
-    {
-      this.dataHasOrNot=true;
+    if (this.findPetLoveList.length == 0) {
+      this.dataHasOrNot = true;
     }
-    else{
-      this.dataHasOrNot=false;
+    else {
+      this.dataHasOrNot = false;
     }
 
   }
+
+
 
   onDetailsClick(petId: number) {
     this.router.navigate(['/find-pet-love-details/' + petId]);
   }
 
-  onContactClick(petId:number){
-    this.PetId=petId;
+  onContactClick(petId: number) {
+    this.PetId = petId;
+
   }
 
   onRequestClick() {
     this.securityToken = localStorage.getItem('token');
     if (this.securityToken != null) {
-      this.sharedService.getPetByPetId(this.PetId)
-        .subscribe((petResult: Pet[]) => {
-          this.pet = petResult[0];
-          this.loginUserId = localStorage.getItem('RequesterOwnerId');
+      if (this.myPetIdValue != 0) {
+        this.sharedService.getPetByPetId(this.PetId)
+          .subscribe((petResult: Pet[]) => {
+            this.pet = petResult[0];
+            this.loginUserId = localStorage.getItem('RequesterOwnerId');
 
-          let petOwner_petId: number;
+            var data = {
+              "PetId": this.pet.PetId,
+              "PetOwnerId": this.pet.PetOwnerId,
+              "RequesterOwnerId": this.loginUserId,
+              "RequesterPetId": this.myPetIdValue
+            }
 
-          this.findPetLoveService.getFindPatLoveByPetOwnerId(this.pet.PetOwnerId)
-            .subscribe((result) => {
-              //get owner PetId
-              petOwner_petId = result.PetId;
-            });
+            //set loader gif true
+            this.showloadingImage = true;
 
-            console.log(this.pet.PetId);
+            this.sharedService.Request(data, this.securityToken, 'RequestPetMatingRequest', this.pet)
+              .subscribe((result: any) => {
+                var status = result.Status;
+                var errorMessage = result.ErrorMessage;
+                if (status != 'Errored') {
+                  this.toastr.success(status, '');
+                  this.router.navigate(['/my-request']);
+                }
+                else {
+                  this.toastr.warning(errorMessage, '');
+                }
 
-          var data = {
-            "PetId": this.pet.PetId,
-            "PetOwnerId": this.pet.PetOwnerId,
-            "RequesterOwnerId": this.loginUserId,
-            "RequesterPetId": petOwner_petId
-          }
+              });
 
-          //set loader gif true
-          this.showloadingImage=true;
-          
-          this.sharedService.Request(data, this.securityToken,'RequestPetMatingRequest',this.pet)
-            .subscribe((result: any) => {
-              var status = result.Status;
-              var errorMessage = result.ErrorMessage;
-              if (status != 'Errored') {
-                this.toastr.success(status, '');
-                this.router.navigate(['/my-request']);
-              }
-              else {
-                this.toastr.warning(errorMessage, '');
-              }
+          });
 
-            });
-
-        });
+      }
+      else {
+        this.toastr.warning("Please select my pet", '');
+      }
     }
     else {
       this.router.navigate(['/sign-in']);
@@ -160,6 +184,4 @@ export class FindPetLoveComponent implements OnInit {
 
   }
 
-
-  
 }

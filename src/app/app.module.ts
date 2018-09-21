@@ -42,6 +42,7 @@ import { MyPetComponent } from './my-pet/my-pet.component';
 import { AddMyPetComponent } from './my-pet/add-my-pet/add-my-pet.component';
 import { MyPetService } from './my-pet/MyPet.service';
 import { MyPetDetailsComponent } from './my-pet/my-pet-details/my-pet-details.component';
+import { ConfigService } from './shared/api_settings/config.service';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { MyPetDetailsComponent } from './my-pet/my-pet-details/my-pet-details.co
     ToastModule.forRoot()
   ],
   providers: [
+    ConfigService,
     OwnPetService,
     SearchService,
     FindPetLoveService,

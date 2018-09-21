@@ -137,7 +137,8 @@ export class AddMyPetComponent implements OnInit {
             this.myPet.Latitude = this.myPetList[0].Latitude;
             this.myPet.Longitude = this.myPetList[0].Longitude;
 
-            this.imagePath = this.myPetList[0].PictrueName;
+            this.petImageUrl = this.myPetList[0].PictrueName;
+            this.imagePath=this.myPetList[0].PictrueName;
 
             //load area list
             this.myPetService.getAreaList(result.Data[0].CityId)
@@ -221,7 +222,7 @@ export class AddMyPetComponent implements OnInit {
     var reader = new FileReader();
     reader.onload = (event: ProgressEvent) => {
       //no problem for this error
-      this.imagePath = (<FileReader>event.target).result;
+      this.imagePath = (<FileReader>event.target).result.toString();
     }
 
     reader.readAsDataURL(fileInput.target.files[0]);
@@ -254,6 +255,9 @@ export class AddMyPetComponent implements OnInit {
             this.petImageUrl = result.ImgUrl;
           });
       }
+      else{
+        this.myPet.PictrueName=this.petImageUrl;
+      }
 
 
       if (myPetForm.value.PetName != "" && myPetForm.value.PetType != "" && myPetForm.value.Description && myPetForm.value.BreedName != "" &&
@@ -282,8 +286,17 @@ export class AddMyPetComponent implements OnInit {
           .subscribe((result: any) => {
             let status = result.Status;
             if (status != "Errored") {
-              this.router.navigate(['/my-pet']);
-              this.toastr.success('Success', 'Success')
+              if(this.isEditPet)
+              {
+                this.toastr.success('Success', 'Success')
+                this.router.navigate(['/my-pet-details/'+this.petId]);
+              }
+              else{
+                this.toastr.success('Success', 'Success')
+                this.router.navigate(['/my-pet']);
+              }
+              
+              
             }
             else {
               this.toastr.error(result.ErrorMessage, 'Error')

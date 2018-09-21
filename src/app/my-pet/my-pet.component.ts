@@ -20,7 +20,7 @@ export class MyPetComponent implements OnInit {
 
   securityToken: string;
   loginUserId: string;
-  withdrawRequestId:number;
+  withdrawRequestId: number;
 
   // @ViewChild('searchInput') searchValue: ElementRef;
 
@@ -47,13 +47,13 @@ export class MyPetComponent implements OnInit {
           this.loadedMyPetList = result.Data;
           console.log(this.loadedMyPetList);
         }
-        else{
+        else {
           this.toastr.error(result.ErrorMessage, 'Error')
         }
-       
+
       })
 
-      this.myPetService.showloadingImageSubject
+    this.myPetService.showloadingImageSubject
       .subscribe((trueorfalse: boolean) => {
         this.showloadingImage = trueorfalse;
       })
@@ -68,42 +68,55 @@ export class MyPetComponent implements OnInit {
     this.router.navigate(['/my-pet-details/' + petId]);
   }
 
-  onDeleteClick(_DeletePetId:number){
-    this.withdrawRequestId=_DeletePetId;
-  }
-
-  // onEditPetClick(petId:number){
-  //   this.router.navigate(['/my-pet/' + petId]);
-  // }
-
-  
-  onDeletePet() {
-    console.log(this.withdrawRequestId)
-    this.myPetService.deleteMypet(this.securityToken,this.withdrawRequestId)
+  onLoveClick(petId: number) {
+    this.myPetService.makePetFavourite(this.securityToken, petId)
       .subscribe((result: any) => {
         let status = result.Status;
         if (status != "Errored") {
           this.toastr.success(result.Data, 'Success')
-
-      this.myPetService.mypetList(this.securityToken)
-      .subscribe((result: any) => {
-        let status = result.Status;
-        if (status != "Errored") {
-          this.loadedMyPetList = result.Data;
         }
         else{
           this.toastr.error(result.ErrorMessage, 'Error')
         }
-       
       })
+    }
 
+        onDeleteClick(_DeletePetId: number){
+          this.withdrawRequestId = _DeletePetId;
         }
-        else {
-          this.toastr.error(result.ErrorMessage, 'Error')
+
+        // onEditPetClick(petId:number){
+        //   this.router.navigate(['/my-pet/' + petId]);
+        // }
+
+
+        onDeletePet() {
+          console.log(this.withdrawRequestId)
+          this.myPetService.deleteMypet(this.securityToken, this.withdrawRequestId)
+            .subscribe((result: any) => {
+              let status = result.Status;
+              if (status != "Errored") {
+                this.toastr.success(result.Data, 'Success')
+
+                this.myPetService.mypetList(this.securityToken)
+                  .subscribe((result: any) => {
+                    let status = result.Status;
+                    if (status != "Errored") {
+                      this.loadedMyPetList = result.Data;
+                    }
+                    else {
+                      this.toastr.error(result.ErrorMessage, 'Error')
+                    }
+
+                  })
+
+              }
+              else {
+                this.toastr.error(result.ErrorMessage, 'Error')
+              }
+            })
         }
-      })
-  }
 
 
-}
+      }
 

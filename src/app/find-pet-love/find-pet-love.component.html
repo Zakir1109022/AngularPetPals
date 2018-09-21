@@ -63,8 +63,8 @@
               <img class="pointerCursor" data-toggle="modal" data-target="#FindPetLoveRequestModal" 
               (click)="onContactClick(findPetLove.PetId)"
               src="./assets/image/Request.png" alt="" height="40" width="40">
-
-
+              <img *ngIf="findPetLove.KCIRegistered ==true" 
+              src="./assets/image/KCICertified.png" alt="" height="40" width="40">
             </div>
           </div>
         </div>
@@ -85,6 +85,15 @@
                   <!-- Modal body -->
                   <div class="modal-body">
                     <h5>Are you sure you want to send love request</h5>
+                    <div class="form-group" *ngIf="securityToken !=undefined" >
+                      <label>Select Pet<sup style="color: red">*</sup></label>
+                      <select #myPetId name="myPets"
+                      [(ngModel)]="myPetIdValue"
+                      class="form-control">
+                      <option *ngFor="let myPet of myPetList"
+                       [ngValue]="myPet.PetId" >{{myPet.PetName}}</option>
+                      </select>
+                    </div>
                   </div>
 
                   <!-- Modal footer -->

@@ -2,20 +2,24 @@ import { Injectable } from "@angular/core";
 import { User } from "./user.model";
 import { Observable, Subject } from 'rxjs'
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { ConfigService } from "../shared/api_settings/config.service";
 
 
 @Injectable()
 export class AuthService {
 
-    private baseUrl = " http://app.petpals.love/staging/api/";
+    private baseUrl;
 
 
     token: string;
     tokenValue = new Subject<string>();
     emailValue = new Subject<string>();
 
-    constructor(private http: Http) {
-
+    constructor(
+        private http: Http,
+        private appConfig: ConfigService
+    ) {
+        this.baseUrl = appConfig.getApiURI()
     }
 
     signUp(user: User) {
@@ -63,46 +67,46 @@ export class AuthService {
 
     saveUser(user: any, userToken: string) {
         const headers = new Headers({ 'Content-Type': 'application/json' });
-        headers.append('SecurityToken',userToken)
-        headers.append('Authorization','Bearer '+userToken)
-        
-        var body={
-        "UserName":user.UserName,
-        "Password" :'',
-        "Locale" :'',
-       "FirstName":user.FirstName,
-       "AreaId":0,
-       "Dob":user.Dob,
-       "UserId":user.UserId,
-       "LastName":user.LastName,
-       "MobilePhone":user.MobilePhone,
-       "EmailId":user.EmailId,
-       "Address1":user.Address1,
-       "Address2":user.Address2,
-       "LoggedInIpAddress":'',
-       "Gender":user.Gender,
-       "EmailNotification":false,
-       "SmsNotification":false,
-       "Salutation":user.Salutation,
-       "PinCode":user.PinCode,
-       "BloodGroup":user.BloodGroup,
-       "NearestLandMark":'',
-       "DeviceId":user.DeviceId,
-       "UserProfilePicture":user.UserProfilePicture,
-       "DeviceType":user.DeviceType,
-       "Latitude":user.Latitude,
-       "Longitude":user.Longitude,
-       "UserType":user.UserType,
-       "CountryName":'Demo',
-       "CityName" : 'Demo',
-       "AreaName" :'Demo',
-       "KCIRegistered" :false,
-       "KCIDetails":''
-       }
+        headers.append('SecurityToken', userToken)
+        headers.append('Authorization', 'Bearer ' + userToken)
 
-       console.log(body);
+        var body = {
+            "UserName": user.UserName,
+            "Password": '',
+            "Locale": '',
+            "FirstName": user.FirstName,
+            "AreaId": 0,
+            "Dob": user.Dob,
+            "UserId": user.UserId,
+            "LastName": user.LastName,
+            "MobilePhone": user.MobilePhone,
+            "EmailId": user.EmailId,
+            "Address1": user.Address1,
+            "Address2": user.Address2,
+            "LoggedInIpAddress": '',
+            "Gender": user.Gender,
+            "EmailNotification": false,
+            "SmsNotification": false,
+            "Salutation": user.Salutation,
+            "PinCode": user.PinCode,
+            "BloodGroup": user.BloodGroup,
+            "NearestLandMark": '',
+            "DeviceId": user.DeviceId,
+            "UserProfilePicture": user.UserProfilePicture,
+            "DeviceType": user.DeviceType,
+            "Latitude": user.Latitude,
+            "Longitude": user.Longitude,
+            "UserType": user.UserType,
+            "CountryName": 'Demo',
+            "CityName": 'Demo',
+            "AreaName": 'Demo',
+            "KCIRegistered": false,
+            "KCIDetails": ''
+        }
 
-       
+        console.log(body);
+
+
         return this.http.post(this.baseUrl + 'MobileAccount/SaveMyProfile', body, { headers: headers })
             .map((response: Response) => {
                 const jsonResult = response.json().Data;
@@ -128,13 +132,12 @@ export class AuthService {
                 const jsonResult = response.json().Data;
 
                 //for authentication
-                if(jsonResult !=null)
-                {
-                    this.token=jsonResult.SecurityToken;
+                if (jsonResult != null) {
+                    this.token = jsonResult.SecurityToken;
                     this.tokenValue.next(this.token);
                     this.emailValue.next(jsonResult.EmailId);
                 }
-               
+
 
                 return jsonResult;
             })
@@ -148,19 +151,18 @@ export class AuthService {
 
     saveImage(file: File) {
         if (file != undefined) {
-            let formData: FormData = new FormData();  
+            let formData: FormData = new FormData();
             formData.append('Content-Disposition', file);
             formData.append('name', 'DemoFieldName');
             formData.append('filename', file.name);
             formData.append('Content-Type', file.type);
-    
-            let headers = new Headers() 
-    
+
+            let headers = new Headers()
+
             //headers = new Headers({ 'Content-Type': 'multipart/form-data; boundary=-------------------------acebdf13572468' });
             let options = new RequestOptions({ headers: headers });
-    
-            this.baseUrl='http://app.petpals.love/staging/api/';
-    
+
+
             return this.http.post(this.baseUrl + 'Utils/UploadFile', formData, options)
                 .map((response: Response) => {
                     const jsonResult = response.json().Data;
@@ -171,10 +173,10 @@ export class AuthService {
                     return Observable.throw(error.json())
                 });
         }
-        else{
+        else {
             window.alert("Please add profile picture")
         }
-        
+
     }
 
 
@@ -182,8 +184,8 @@ export class AuthService {
     forgotPassword(email: string) {
         const headers = new Headers({ 'Content-Type': 'application/json' });
 
-        var body={
-            "EmailId":email
+        var body = {
+            "EmailId": email
         }
         return this.http.post(this.baseUrl + 'MobileAccount/ForgotPassword', body, { headers: headers })
             .map((response: Response) => {

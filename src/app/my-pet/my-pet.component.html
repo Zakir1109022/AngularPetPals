@@ -25,10 +25,14 @@
         <div class="card-body">
           <div class="row">
             <div class="col-sm-3 pointerCursor petImage">
-              <img class="rounded-circle" src="{{myPet.PictrueName}}" height="100" width="100">
+              <img class="rounded-circle" 
+              (click)="onDetailsClick(myPet.PetId)"
+              src="{{myPet.PictrueName}}" height="100" width="100">
             </div>
             <div class="col-sm-6 petDetails">
-              <label class="bold" style="cursor: pointer;font-size: 15px;" >{{myPet.PetName}}</label>
+              <label class="bold" 
+              style="cursor: pointer;font-size: 15px;" 
+              (click)="onDetailsClick(myPet.PetId)">{{myPet.PetName}}</label>
               <br>
               <label>PetGender:</label>
               <label>{{myPet.PetGender}}</label>
@@ -41,12 +45,12 @@
             </div>
 
             <div class="col-sm-3 petContact">
+                <img *ngIf="myPet.PetId !=1" class="pointerCursor"  (click)="onLoveClick(myPet.PetId)"
+                src="./assets/image/love.png" alt="" height="40" width="40">
+                <br>
+                <br>
               <img *ngIf="myPet.PetId !=1" class="pointerCursor" data-toggle="modal" data-target="#DeletePetModal" (click)="onDeleteClick(myPet.PetId)"
                 src="./assets/image/delete.png" alt="" height="40" width="40">
-                <br>
-                <br>
-                <img *ngIf="myPet.PetId !=1" class="pointerCursor"  (click)="onDetailsClick(myPet.PetId)"
-                src="./assets/image/edit.jpg" alt="" height="40" width="40">
             </div>
           </div>
         </div>

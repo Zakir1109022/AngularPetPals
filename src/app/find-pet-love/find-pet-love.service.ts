@@ -3,17 +3,21 @@ import { Injectable } from "@angular/core";
 import 'rxjs';
 import { Observable, Subject } from 'rxjs'
 import { Pet } from '../shared/pet.model';
+import { ConfigService } from '../shared/api_settings/config.service';
 
 @Injectable()
 export class FindPetLoveService {
 
-    private baseUrl="http://staging.mypetfriends.in/api/";
+    private baseUrl;
 
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();
 
-    constructor(private http: Http) {
-
+    constructor(
+        private http: Http,
+        private appConfig: ConfigService
+    ) {
+        this.baseUrl = appConfig.getApiURI();
     }
 
 
@@ -21,7 +25,7 @@ export class FindPetLoveService {
         var body = { "WillingToSell": 0, "PetOwnerId": petOwnerId }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];

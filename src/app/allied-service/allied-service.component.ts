@@ -36,6 +36,10 @@ export class AlliedServiceComponent implements OnInit {
   loginUserId: string;
   contactPetId:number;
 
+ public selectedCountry:Country;
+ public selectedCity:City;
+ public selectedArea:Area;
+
   @ViewChild('searchInput') searchValue: ElementRef;
 
   currentPage: number = 1;

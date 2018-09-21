@@ -41,20 +41,12 @@ export class LoginComponent implements OnInit {
 
     this.authService.signIn(userName, password)
       .subscribe((result: any) => {
-
           if (result != null) {
-            console.log(result)
-
-            // this.authService.saveUser(result, result.SecurityToken)
-            //   .subscribe((result) => {
-            //     console.log(result)
-            //   });
-
             localStorage.setItem('token', result.SecurityToken);
             localStorage.setItem('emailId', result.EmailId);
             localStorage.setItem('RequesterOwnerId', result.UserId);
 
-            this.router.navigate(['/contact-us']);
+            this.router.navigate(['/my-request']);
           }
           else {
             this.toastr.error('Invalid Credential', '');

@@ -55,6 +55,10 @@ export class RegisterComponent implements OnInit {
   uploadedFile: File;
   imagePath:string="#";
 
+  public selectedCountry:Country;
+  public selectedCity:City;
+  public selectedArea:Area;
+
 
 
   constructor(
@@ -119,7 +123,7 @@ export class RegisterComponent implements OnInit {
     var reader = new FileReader();
     reader.onload = (event: ProgressEvent) => {
       //no problem for this error
-      this.imagePath = (<FileReader>event.target).result;
+      this.imagePath =(<FileReader>event.target).result.toString();
     }
 
     reader.readAsDataURL(fileInput.target.files[0]);

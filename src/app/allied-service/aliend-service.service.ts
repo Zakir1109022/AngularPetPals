@@ -3,17 +3,21 @@ import { Injectable } from "@angular/core";
 import 'rxjs';
 import { Observable, Subject } from 'rxjs'
 import { Pet } from '../shared/pet.model';
+import { ConfigService } from '../shared/api_settings/config.service';
 
 @Injectable()
 export class AlliedService {
 
-    private baseUrl="http://staging.mypetfriends.in/api/";
+    private baseUrl;
     searchPetList = new Subject<Pet[]>();
     showloadingImageSubject = new Subject<boolean>();
     dataHasOrNotSubject = new Subject<boolean>();
 
-    constructor(private http: Http) {
-
+    constructor(
+        private http: Http,
+        private apiConfig: ConfigService
+    ) {
+        this.baseUrl = apiConfig.getApiURI()
     }
 
 
@@ -22,7 +26,7 @@ export class AlliedService {
         var body = { "UserType": "Allied", "BreedName": alliedName }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token,body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -86,7 +90,7 @@ export class AlliedService {
         var body = { "UserType": "Allied", "AreaName": area, "CityName": city, "CountryName": country }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -149,7 +153,7 @@ export class AlliedService {
         var body = { "UserType": "Allied", "CountryName": country }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -212,7 +216,7 @@ export class AlliedService {
         var body = { "UserType": "Allied", "CityName": city }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -275,7 +279,7 @@ export class AlliedService {
         var body = { "UserType": "Allied", "AreaName": area }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
@@ -338,7 +342,7 @@ export class AlliedService {
         var body = { "UserType": "Allied", "CityName": city, "AreaName": area }
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const token = '6742142b-0623-4adc-8e41-0b290330db7f';
-        return this.http.post(this.baseUrl+'Utils/SearchPets?token=' + token, body, { headers: headers })
+        return this.http.post(this.baseUrl + 'Utils/SearchPets?token=' + token, body, { headers: headers })
             .map((response: Response) => {
                 const petList = response.json().Data;
                 let transferPetList: Pet[] = [];
